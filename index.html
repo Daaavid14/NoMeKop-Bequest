@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nomekop Bequest</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="shortcut icon" href="backgrounds/pokemon-ball.png" type="image/x-icon">
+</head>
+<body>
+
+    <!-- ================= NAVIGATION ================= -->
+    <nav class="navbar">
+        <div class="logo">
+            <img src="backgrounds/nomekop.png" alt="game logo">
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#" id="navHome">Home</a></li>
+            <li><a href="#" id="navMarketplace">Marketplace</a></li>
+            <li><a href="#" id="navCollection">Collection</a></li>
+            <li><a href="#" id="navWhitepaper">Whitepaper</a></li>
+        </ul>
+
+        <!-- Connect wallet button (existing) -->
+        <button id="connectWalletBtn" class="connect-btn wallet-btn">CONNECT WALLET</button>
+
+        <!-- Wallet dropdown menu (insert immediately after the button) -->
+        <div id="walletMenu" class="wallet-menu" aria-hidden="true">
+            <div class="wallet-menu-card">
+                <div class="wm-row wm-header">
+                <div class="wm-address" id="wmAddressShort">0x00...0000</div>
+                <div class="wm-balance" id="wmBalance">— ETH</div>
+                </div>
+
+                <div class="wm-row wm-actions">
+                <button id="wmCopyBtn" class="wm-btn">Copy</button>
+                <a id="wmExplorer" class="wm-link" target="_blank" rel="noopener">View on Explorer</a>
+                </div>
+
+                <div class="wm-row wm-profile">
+                <div class="wm-label">Network</div>
+                <div id="wmNetwork" class="wm-value">—</div>
+                </div>
+
+                <div class="wm-row wm-footer">
+                <button id="wmLogoutBtn" class="wm-btn wm-logout">Log out</button>
+                </div>
+            </div>
+        </div>
+
+    </nav>
+
+    <!-- ================= HERO SECTION ================= -->
+    <header class="hero" id="homeSection">
+
+        <div class="hero-left">
+            <img src="assets/sprites.png" alt="Pokemon Group">
+        </div>
+
+        <div class="hero-center">
+            <h1 class="title">NOMEKOP</h1>
+            <h1 class="title">BEQUEST</h1>
+            <div class="hero-buttons">
+                <a href="lobby.html" id="navPlayGames">
+                    <button class="btn play">PLAY GAMES</button>
+                </a>
+            </div>
+            <p class="sub-text">Catch • Train • Battle • Trade</p>
+        </div>
+
+        <div class="hero-right">
+            <img src="assets/kind1.png" alt="Trainer Red">
+        </div>
+
+        <div id="walletPopup" class="wallet-popup" aria-hidden="true">
+        <div class="wallet-popup-backdrop"></div>
+
+        <div class="wallet-popup-panel" role="dialog" aria-modal="true">
+            <h2 class="wallet-popup-title">Connect Wallet</h2>
+            <p class="wallet-popup-message">Please connect your wallet to continue.</p>
+
+            <div class="wallet-popup-actions">
+                <button id="popupConnectBtn" class="wallet-btn wallet-btn-primary">Connect Now</button>
+                <button id="popupCloseBtn" class="wallet-btn wallet-btn-secondary">Cancel</button>
+            </div>
+
+            <div id="modalStatus" class="wallet-popup-status"></div>
+        </div>
+    </div>
+
+    </header>
+
+    <!-- ================= FOOTER ================= -->
+    <footer>
+        <p>© 2025 Nomekop Bequest. All rights reserved.</p>
+    </footer>
+
+    <!-- Wallet Required Popup -->
+    <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
+    <script src="script/app.js"></script>
+</body>
+</html>
