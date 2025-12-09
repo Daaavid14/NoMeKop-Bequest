@@ -19,17 +19,33 @@ const $ = id => document.getElementById(id);
 function pick(...ids) { for (const id of ids) { const el = $(id); if (el) return el; } return null; }
 function short(addr) { return addr ? addr.slice(0,6) + "..." + addr.slice(-4) : ""; }
 
-// ---------- popup / dropdown / hover logic (unchanged, kept from your file) ----------
-/* ... [keep the exact popup/dropdown/hover functions you already have] ...
-   For brevity here I'm including those functions verbatim; when pasting, keep everything below
-   from showPopup() through protectNavigation() and DOM wiring unchanged except where noted. */
-
 // ---------- POPUP / DROPDOWN (unchanged) ----------
-function showPopup() { const p = $("walletPopup"); if (p) p.style.display = "flex"; }
-function hidePopup() { const p = $("walletPopup"); if (p) p.style.display = "none"; }
-function showDropdown() { const menu = pick("walletMenu","walletDropdown","walletMenu"); if (!menu) return; menu.setAttribute("aria-hidden","false"); }
-function hideDropdown() { const menu = pick("walletMenu","walletDropdown","walletMenu"); if (!menu) return; menu.setAttribute("aria-hidden","true"); }
-function toggleDropdown() { const menu = pick("walletMenu","walletDropdown","walletMenu"); if (!menu) return; const hidden = menu.getAttribute("aria-hidden")==="true"; hidden ? showDropdown() : hideDropdown(); }
+function showPopup() { 
+  const p = $("walletPopup"); 
+  if (p) p.style.display = "flex"; 
+}
+
+function hidePopup() { 
+  const p = $("walletPopup"); 
+  if (p) p.style.display = "none"; 
+}
+
+function showDropdown() { 
+  const menu = pick("walletMenu","walletDropdown","walletMenu"); 
+  if (!menu) return; menu.setAttribute("aria-hidden","false"); 
+}
+
+function hideDropdown() { 
+  const menu = pick("walletMenu","walletDropdown","walletMenu"); 
+  if (!menu) return; menu.setAttribute("aria-hidden","true"); 
+}
+
+function toggleDropdown() { 
+  const menu = pick("walletMenu","walletDropdown","walletMenu"); 
+  if (!menu) return; 
+  const hidden = menu.getAttribute("aria-hidden")==="true"; 
+  hidden ? showDropdown() : hideDropdown(); 
+}
 
 // ---------- Hover support (kept) ----------
 let _hoverEnabled = false, _enterHandler = null, _leaveHandler = null, _menuLeaveHandler = null;
@@ -153,15 +169,44 @@ async function updateTokenBalance() {
 }
 
 // ---------- Copy address & logout (kept) ----------
-async function copyAddress() { if (!userAddress) return alert("No address to copy"); try { await navigator.clipboard.writeText(userAddress); const copyBtn = pick("wmCopyBtn","wdCopyBtn"); if (copyBtn) { const old = copyBtn.innerText; copyBtn.innerText = "Copied!"; setTimeout(()=> { copyBtn.innerText = old; }, 1200); } } catch (err) { alert("Copy failed: " + err.message); } }
+async function copyAddress() { 
+  if (!userAddress) 
+    return alert("No address to copy"); 
+  try { 
+    await navigator.clipboard.writeText(userAddress); 
+    const copyBtn = pick("wmCopyBtn","wdCopyBtn"); 
+    if (copyBtn) { 
+      const old = copyBtn.innerText; 
+      copyBtn.innerText = "Copied!"; 
+      setTimeout(()=> { 
+        copyBtn.innerText = old; 
+      }, 1200); 
+    } 
+  } catch (err) { 
+      alert("Copy failed: " + err.message); 
+    } 
+}
+
 function logoutLocal() {
-  isWalletConnected = false; provider = null; signer = null; userAddress = null;
-  const btn = $("connectWalletBtn"); if (btn) btn.innerText = "CONNECT WALLET";
-  hideDropdown(); hidePopup();
-  const addressField = pick("wmAddressShort","wdAddressShort"); if (addressField) addressField.innerText = "0x00...0000";
-  const balanceField = pick("wmBalance","wdBalance"); if (balanceField) balanceField.innerText = "— ETH";
-  const tokenField = pick("wmToken","wdToken"); if (tokenField) tokenField.innerText = "—";
-  const networkField = pick("wmNetwork","wdNetwork"); if (networkField) networkField.innerText = "—";
+  isWalletConnected = false; 
+  provider = null; 
+  signer = null; 
+  userAddress = null;
+
+  const btn = $("connectWalletBtn"); 
+  if (btn) btn.innerText = "CONNECT WALLET";
+
+  hideDropdown(); 
+  hidePopup();
+
+  const addressField = pick("wmAddressShort","wdAddressShort"); 
+  if (addressField) addressField.innerText = "0x00...0000";
+  const balanceField = pick("wmBalance","wdBalance"); 
+  if (balanceField) balanceField.innerText = "— ETH";
+  const tokenField = pick("wmToken","wdToken"); 
+  if (tokenField) tokenField.innerText = "—";
+  const networkField = pick("wmNetwork","wdNetwork"); 
+  if (networkField) networkField.innerText = "—";
   if (window.ethereum && window.ethereum.removeListener) {
     try { window.ethereum.removeListener("accountsChanged", onAccountsChanged); window.ethereum.removeListener("chainChanged", onChainChanged); } catch(e) {}
   }
