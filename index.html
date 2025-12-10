@@ -9,7 +9,6 @@
 </head>
 <body>
 
-    <!-- ================= NAVIGATION ================= -->
     <nav class="navbar">
         <div class="logo">
             <img src="backgrounds/nomekop.png" alt="game logo">
@@ -22,16 +21,14 @@
             <li><a href="#" id="navWhitepaper">Whitepaper</a></li>
         </ul>
 
-        <!-- Connect wallet button (existing) -->
         <button id="connectWalletBtn" class="connect-btn wallet-btn">CONNECT WALLET</button>
+        <div class="wm-rows wm-headers">
+            <div class="wm-balance" id="wmBalance">— ETH</div>
+        </div>
 
-        <!-- Wallet dropdown menu (insert immediately after the button) -->
         <div id="walletMenu" class="wallet-menu" aria-hidden="true">
             <div class="wallet-menu-card">
-                <div class="wm-row wm-header">
-                <div class="wm-address" id="wmAddressShort">0x00...0000</div>
-                <div class="wm-balance" id="wmBalance">— ETH</div>
-                </div>
+                
 
                 <div class="wm-row wm-actions">
                 <button id="wmCopyBtn" class="wm-btn">Copy</button>
@@ -51,7 +48,6 @@
 
     </nav>
 
-    <!-- ================= HERO SECTION ================= -->
     <header class="hero" id="homeSection">
 
         <div class="hero-left">
@@ -91,12 +87,10 @@
 
     </header>
 
-    <!-- ================= FOOTER ================= -->
     <footer>
         <p>© 2025 Nomekop Bequest. All rights reserved.</p>
     </footer>
 
-    <!-- Wallet Required Popup -->
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
     <script src="script/app.js"></script>
 </body>
