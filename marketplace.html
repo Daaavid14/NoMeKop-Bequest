@@ -1,55 +1,43 @@
-<!doctype html>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8">
-  <title>Marketplace - Nomekop</title>
-  <link rel="stylesheet" href="css/styles.css">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pokémon NFT Marketplace - Pokédex Edition</title>
+  <link rel="stylesheet" href="css/marketplace.css" />
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
 </head>
 <body>
-  <!-- ================= NAVIGATION ================= -->
-    <nav class="navbar">
-        <div class="logo">
-            <img src="backgrounds/nomekop.png" alt="game logo">
+  <header class="header">
+    <h1 class="title">Pokémon NFT Marketplace</h1>
+    <button id="connectWalletBtn" class="wallet-btn">CONNECT WALLET</button>
+  </header>
+
+  <main>
+    <section class="marketplace-grid" id="marketGrid">
+      <!-- NFTs dynamically loaded here -->
+    </section>
+  </main>
+
+  <template id="nftCardTemplate">
+    <div class="nft-card">
+      <div class="nft-image-wrapper">
+        <img class="nft-image" src="" alt="Pokemon NFT" />
+      </div>
+      <div class="nft-info">
+        <h3 class="nft-name"></h3>
+        <p class="nft-type"></p>
+        <p class="nft-owner"></p>
+        <div class="nft-price">
+          <img src="https://cdn-icons-png.flaticon.com/512/188/188918.png" class="pokeball-icon" alt="Pokeball" />
+          <span class="price-value"></span>
         </div>
+        <button class="buy-btn">Buy</button>
+        <button class="list-btn">List</button>
+      </div>
+    </div>
+  </template>
 
-        <ul class="nav-links">
-            <li><a href="index.html" id="navHome">Home</a></li>
-            <li><a href="marketplace.html" id="navMarketplace">Marketplace</a></li>
-            <li><a href="#" id="navCollection">Collection</a></li>
-            <li><a href="#" id="navWhitepaper">Whitepaper</a></li>
-        </ul>
-
-        <!-- Connect wallet button (existing) -->
-        <button id="connectWalletBtn" class="connect-btn wallet-btn">CONNECT WALLET</button>
-
-        <!-- Wallet dropdown menu (insert immediately after the button) -->
-        <div id="walletMenu" class="wallet-menu" aria-hidden="true">
-            <div class="wallet-menu-card">
-                <div class="wm-row wm-header">
-                <div class="wm-address" id="wmAddressShort">0x00...0000</div>
-                <div class="wm-balance" id="wmBalance">— ETH</div>
-                </div>
-
-                <div class="wm-row wm-actions">
-                <button id="wmCopyBtn" class="wm-btn">Copy</button>
-                <a id="wmExplorer" class="wm-link" target="_blank" rel="noopener">View on Explorer</a>
-                </div>
-
-                <div class="wm-row wm-profile">
-                <div class="wm-label">Network</div>
-                <div id="wmNetwork" class="wm-value">—</div>
-                </div>
-
-                <div class="wm-row wm-footer">
-                <button id="wmLogoutBtn" class="wm-btn wm-logout">Log out</button>
-                </div>
-            </div>
-        </div>
-
-    </nav>
-
-  <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
-  <script src="script/app.js"></script> <!-- reuse your app.js for connect & helpers -->
-  <script src="script/marketplace.js"></script>
+  <script type="module" src="script/marketplace.js"></script>
 </body>
 </html>

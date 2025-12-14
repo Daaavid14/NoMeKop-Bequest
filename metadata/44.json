@@ -1,7 +1,7 @@
 {
   "name": "Swampert Mega",
   "description": "Swampert Mega — NFT Pokémon with Axie-style stats.",
-  "image": "./pokeSprites/Swampert_Mega.gif",
+  "image": "ipfs://bafybeialp2okoiyl24adqzygeadfybv2cgysmcezdpsnnswlwd6jm3pcla/Swampert_Mega.gif",
   "hp": 320,
   "type": "Water/Ground",
 

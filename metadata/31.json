@@ -1,7 +1,7 @@
 {
   "name": "Metagross Mega",
   "description": "Metagross Mega — NFT Pokémon with Axie-style stats.",
-  "image": "./pokeSprites/Metagross_Mega.gif",
+  "image": "ipfs://bafybeialp2okoiyl24adqzygeadfybv2cgysmcezdpsnnswlwd6jm3pcla/Metagross_Mega.gif",
   "hp": 256,
   "type": "Steel/Psychic",
 
