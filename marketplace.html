@@ -3,40 +3,44 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pokémon NFT Marketplace - Pokédex Edition</title>
+  <title>Marketpace</title>
   <link rel="stylesheet" href="css/marketplace.css" />
+  <link rel="shortcut icon" href="backgrounds/pokemon-ball.png" type="image/x-icon">
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
 </head>
 <body>
-  <header class="header">
-    <h1 class="title">Pokémon NFT Marketplace</h1>
-    <button id="connectWalletBtn" class="wallet-btn">CONNECT WALLET</button>
-  </header>
 
-  <main>
-    <section class="marketplace-grid" id="marketGrid">
-      <!-- NFTs dynamically loaded here -->
-    </section>
+  <main class="marketplace-bg">
+    <div id="marketGrid" class="marketplace-grid"></div>
   </main>
 
-  <template id="nftCardTemplate">
-    <div class="nft-card">
-      <div class="nft-image-wrapper">
-        <img class="nft-image" src="" alt="Pokemon NFT" />
-      </div>
-      <div class="nft-info">
-        <h3 class="nft-name"></h3>
-        <p class="nft-type"></p>
-        <p class="nft-owner"></p>
-        <div class="nft-price">
-          <img src="https://cdn-icons-png.flaticon.com/512/188/188918.png" class="pokeball-icon" alt="Pokeball" />
-          <span class="price-value"></span>
-        </div>
-        <button class="buy-btn">Buy</button>
-        <button class="list-btn">List</button>
+  <!-- 🧩 Details Modal Template -->
+<div id="pokemonModal" class="details-modal" style="display:none;">
+  <div class="details-content">
+    <!-- Elemental Particles Layer -->
+    <div id="typeParticles"></div>
+
+    <span class="close-btn">&times;</span>
+
+    <div class="modal-left">
+      <img id="modalImage" class="details-img" alt="Pokemon Image" />
+      <h2 id="modalName" class="modalName"></h2>
+      <div class="types" id="modalTypes"></div>
+      <div id="modalRarity"></div>
+
+      <div class="stats">
+        <h3>BASE STATS</h3>
+        <div id="modalStats"></div>
       </div>
     </div>
-  </template>
+
+    <div class="modal-right">
+      <h3>SKILLS</h3>
+      <div id="modalSkills" class="skills-grid"></div>
+    </div>
+  </div>
+</div>
+
 
   <script type="module" src="script/marketplace.js"></script>
 </body>

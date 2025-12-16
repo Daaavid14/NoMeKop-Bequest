@@ -1,128 +1,335 @@
-/* marketplace.css - Pokédex Theme */
 
-body {
-  font-family: 'Poppins', sans-serif;
-  background: radial-gradient(circle at top, #ff3b3b, #b81b1b);
-  color: #fff;
-  margin: 0;
-  padding: 0;
-}
+/* ========================= */
+/* NEW FIXED MODAL LAYOUT    */
+/* ========================= */
 
-.header {
+.details-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.85);
   display: flex;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
-  background: #ff1b1b;
-  padding: 1rem 2rem;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.4);
+  z-index: 999;
+  padding: 20px;
 }
 
-.title {
+.details-content {
+  border-radius: 20px;
+  color: white;
+  width: 80%;
+  height: 600px;
+  display: flex;
+  position: relative;
+  animation: fadeIn 0.3s ease;
+  padding: 40px;
+  margin-top: 50px;
+}
+
+/* Left column — image, name, stats */
+.modal-left {
+  flex: 0.6;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  left: -25px;
+  margin: 0 auto;
+}
+
+.details-img {
+  width: 300px;
+  height: 300px;
+  object-fit: contain;
+}
+
+.modalName {
   font-size: 1.8rem;
-  letter-spacing: 2px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
+
+.types {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 10px;
+}
+
+.types img {
+  width: 42px;
+  height: 42px;
+  margin: 0 5px;
+  filter: drop-shadow(0 0 4px rgba(255,255,255,0.6));
+  transition: transform 0.3s ease, filter 0.3s ease;
+}
+
+.types img:hover {
+  transform: scale(1.15);
+  filter: drop-shadow(0 0 10px rgba(255,255,255,0.9));
+}
+
+/* Stats block */
+.stats {
+  width: 90%;
+  margin-top: 20px;
+}
+
+.stats h3 {
+  font-weight: 1000;
+  position: relative;
+  left: 35%;
+  color: #facc15;
+  margin-bottom: 10px;
+}
+
+.stat {
+  margin: 5px 0;
+  font-size: 18px;
+}
+
+.stat label {
+  display: inline-block;
+  width: 60px;
+  font-weight: bold;
+}
+
+.stat-bar {
+  display: inline-flex;
+  align-items: center;
+  width: 70%;
+  background: rgba(255,255,255,0.1);
+  border-radius: 10px;
+  overflow: hidden;
+  height: 20px;
+  position: relative;
+}
+
+.stat-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #22c55e, #3b82f6);
+}
+
+.stat-bar span {
+  position: absolute;
+  right: 5px;
+  font-size: 14px;
+}
+
+/* Right column — skills */
+.modal-right {
+  flex: 0.7;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.modal-right h3 {
+  font-weight: 1000;
+  font-size: 40px;
+  text-align: center;
+  color: white;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-right: 20px;
+}
+
+.skill-card {
+  background: rgba(255, 255, 255, 0.08);
+  border-radius: 12px;
+  height: 35vh;
+  padding: 10px;
+  text-align: left;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.skill-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.skill-card h4 {
+  text-align: center;
+  color: #93c5fd;
+  margin-bottom: 5px;
+  font-size: 15px;
   font-weight: 700;
 }
 
-.wallet-btn {
-  background: #ffca3b;
-  border: none;
-  padding: 0.7rem 1.5rem;
-  border-radius: 8px;
+/* Close button */
+.close-btn {
+  position: absolute;
+  top: -10px;
+  right: 20px;
+  font-size: 50px;
   cursor: pointer;
-  font-weight: bold;
-  color: #000;
-  transition: all 0.2s ease-in-out;
+  color: #fff;
 }
 
-.wallet-btn:hover {
-  background: #fff056;
+/* Animation */
+@keyframes fadeIn {
+  from { opacity: 0; transform: scale(0.95); }
+  to { opacity: 1; transform: scale(1); }
 }
 
-.marketplace-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-  gap: 1.5rem;
-  padding: 2rem;
-}
+  
+/* /////////////////// */
+/*       RARITY        */
+/* /////////////////// */
 
-.nft-card {
-  background: #fff;
-  color: #000;
-  border-radius: 16px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-  transition: transform 0.2s ease-in-out;
-  text-align: center;
-}
-
-.nft-card:hover {
-  transform: translateY(-5px);
-}
-
-.nft-image-wrapper {
-  background: linear-gradient(180deg, #ffdede, #fff);
-  padding: 1rem;
-}
-
-.nft-image {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.nft-info {
-  padding: 1rem;
-}
-
-.nft-name {
-  font-size: 1.3rem;
-  font-weight: bold;
-  color: #b81b1b;
-}
-
-.nft-type {
-  color: #666;
+.rarity-badge {
+  display: inline-block;
+  padding: 4px 10px;
+  border-radius: 12px;
+  font-weight: 600;
   font-size: 0.9rem;
-  margin: 0.2rem 0;
+  color: #fff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.25);
 }
 
-.nft-owner {
-  font-size: 0.8rem;
-  color: #888;
+/* Rarity colors */
+.rarity-badge.common {
+  background: #a3a3a3;
+}
+.rarity-badge.uncommon {
+  background: #22c55e;
+}
+.rarity-badge.rare {
+  background: #3b82f6;
+}
+.rarity-badge.epic {
+  background: #a855f7;
+}
+.rarity-badge.legendary {
+  background: #facc15;
+  color: #000;
 }
 
-.nft-price {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin-top: 0.5rem;
-  gap: 0.3rem;
+/* Optional: Hover animation */
+.rarity-badge:hover {
+  transform: scale(1.1);
+  transition: all 0.2s ease;
 }
 
-.pokeball-icon {
-  width: 20px;
-  height: 20px;
+/* 🌈 Dual-type Gradient Modals with Type Aura */
+.details-content {
+  border: 2px solid rgba(255,255,255,0.1);
+  box-shadow: 0 0 30px rgba(255,255,255,0.1);
+  animation: modalGlow 3s infinite ease-in-out alternate;
+  transition: all 0.4s ease;
 }
 
-.price-value {
-  font-weight: bold;
-  color: #222;
+@keyframes modalGlow {
+  from {
+    box-shadow: 0 0 15px rgba(255,255,255,0.2),
+                inset 0 0 20px rgba(255,255,255,0.1);
+  }
+  to {
+    box-shadow: 0 0 35px rgba(255,255,255,0.4),
+                inset 0 0 25px rgba(255,255,255,0.3);
+  }
 }
 
-.buy-btn, .list-btn {
-  background: #ffca3b;
-  border: none;
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  margin: 0.4rem;
-  font-weight: bold;
-  cursor: pointer;
-  transition: all 0.2s;
+/* 🎯 Stat bar animation */
+.stat-fill {
+  transition: width 0.4s ease, background 0.4s ease, box-shadow 0.3s ease;
+  border-radius: 10px;
+  box-shadow: 0 0 6px rgba(255,255,255,0.4);
 }
 
-.buy-btn:hover {
-  background: #3bff73;
+/* 💫 Modal entrance */
+.details-content {
+  transform: scale(0.9);
+  opacity: 0;
+  animation: modalFadeIn 0.3s forwards ease-in-out;
 }
 
-.list-btn:hover {
-  background: #fff056;
+@keyframes modalFadeIn {
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
 }
+
+/* ========================== */
+/* 🌌 Elemental Particles FX   */
+/* ========================== */
+
+#typeParticles {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  z-index: 1;
+  pointer-events: none;
+}
+
+#typeParticles::before,
+#typeParticles::after {
+  content: "";
+  position: absolute;
+  width: 200%;
+  height: 200%;
+  animation: floatParticles 8s linear infinite;
+  opacity: 0.25;
+}
+
+.fire-particles::before {
+  background: radial-gradient(circle, rgba(255,140,0,0.9) 0%, transparent 70%);
+}
+.fire-particles::after {
+  background: radial-gradient(circle, rgba(255,69,0,0.9) 0%, transparent 70%);
+}
+
+.water-particles::before {
+  background: radial-gradient(circle, rgba(0,191,255,0.9) 0%, transparent 70%);
+}
+.water-particles::after {
+  background: radial-gradient(circle, rgba(135,206,250,0.9) 0%, transparent 70%);
+}
+
+.electric-particles::before {
+  background: radial-gradient(circle, rgba(255,255,0,0.9) 0%, transparent 70%);
+}
+.electric-particles::after {
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, transparent 70%);
+}
+
+.grass-particles::before {
+  background: radial-gradient(circle, rgba(50,205,50,0.9) 0%, transparent 70%);
+}
+.grass-particles::after {
+  background: radial-gradient(circle, rgba(0,128,0,0.9) 0%, transparent 70%);
+}
+
+.psychic-particles::before {
+  background: radial-gradient(circle, rgba(255,105,180,0.9) 0%, transparent 70%);
+}
+.psychic-particles::after {
+  background: radial-gradient(circle, rgba(219,112,147,0.9) 0%, transparent 70%);
+}
+
+.ghost-particles::before {
+  background: radial-gradient(circle, rgba(186,85,211,0.9) 0%, transparent 70%);
+}
+.ghost-particles::after {
+  background: radial-gradient(circle, rgba(147,112,219,0.9) 0%, transparent 70%);
+}
+
+.neutral-particles::before {
+  background: radial-gradient(circle, rgba(255,255,255,0.9) 0%, transparent 70%);
+}
+.neutral-particles::after {
+  background: radial-gradient(circle, rgba(200,200,200,0.9) 0%, transparent 70%);
+}
+
+.details-content {
+  position: relative;
+  z-index: 2;
+}
+

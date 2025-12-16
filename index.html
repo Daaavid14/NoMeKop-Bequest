@@ -1,98 +1,201 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nomekop Bequest</title>
-    <link rel="stylesheet" href="css/styles.css">
-    <link rel="shortcut icon" href="backgrounds/pokemon-ball.png" type="image/x-icon">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pokémon NFT Dashboard</title>
+  <link rel="stylesheet" href="/css/dashboard.css" />
+  <link rel="shortcut icon" href="backgrounds/pokemon-ball.png" type="image/x-icon">
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo">
-            <img src="backgrounds/nomekop.png" alt="game logo">
-        </div>
-
-        <ul class="nav-links">
-            <li><a href="#" id="navHome">Home</a></li>
-            <li><a href="marketplace.html" id="navMarketplace">Marketplace</a></li>
-            <li><a href="#" id="navCollection">Collection</a></li>
-            <li><a href="#" id="navWhitepaper">Whitepaper</a></li>
+  <div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="/backgrounds/nomekop.png" alt="Pokémon NFT Logo" />
+      </div>
+      <nav>
+        <ul>
+          <li class=""><i class="icon">🏠</i> Home</li>
+          <li id="marketplaceNav"><i class="icon">🛒</i> Marketplace</li>
+          <li><i class="icon">⚔️</i> Battle Arena</li>
+          <li><i class="icon">💰</i> Staking</li>
         </ul>
+      </nav>
+      <div class="support">
+        <p>Support Center</p>
+        <p>Whitepaper</p>
+      </div>
+    </aside>
 
-        <button id="connectWalletBtn" class="connect-btn wallet-btn">CONNECT WALLET</button>
-        <div class="wm-rows wm-headers">
-            <div class="wm-balance" id="wmBalance">— ETH</div>
-        </div>
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="top-bar">
+            <h2>Welcome, Trainer!</h2>
 
-        <div id="walletMenu" class="wallet-menu" aria-hidden="true">
-            <div class="wallet-menu-card">
-                
+            <!-- Wrap both elements for hover consistency -->
+            <div class="wallet-container">
+                <button id="connectWalletBtn" class="wallet-btn">CONNECT WALLET</button>
 
-                <div class="wm-row wm-actions">
-                    <button id="wmCopyBtn" class="wm-btn">Copy</button>
-                    <a id="wmExplorer" class="wm-link" target="_blank" rel="noopener">View on Explorer</a>
+                <div id="walletMenu" class="wallet-menu" aria-hidden="true">
+                    <div class="wallet-menu-card">
+                        <div class="wm-header">
+                            <img src="" alt="Trainer Avatar" class="wm-avatar" id="wmAvatar" />
+                            <div class="wm-info">
+                            <h4 id="wmTrainerName">Trainer</h4>
+                            <button class="wm-profile-btn">View Profile</button>
+                        </div>
                     </div>
 
-                    <div class="wm-row wm-profile">
-                    <div class="wm-label">Network</div>
-                    <div id="wmNetwork" class="wm-value">—</div>
+                    <div class="wm-address">
+                        <span id="wmAddressShort">0x0000...0000</span>
+                        <div class="wm-address-actions">
+                            <button id="wmCopyBtn" class="wm-icon-btn" title="Copy Address">📋</button>
+                            <a id="wmExplorer" target="_blank" rel="noopener" class="wm-icon-btn" title="View on Explorer">🔗</a>
+                        </div>
                     </div>
 
-                    <div class="wm-row wm-footer">
-                    <button id="wmLogoutBtn" class="wm-btn wm-logout">Log out</button>
+                    <div class="wm-balance">
+                        <p id="wmBalance">— ETH | — PKC</p>
+                        <span id="wmNetwork" class="wm-network">—</span>
+                    </div>
+
+                    <div class="wm-stats">
+                        <div class="wm-stat"><span>Pokémon</span><strong id="ownedNFTs">0</strong></div>
+                        <div class="wm-stat"><span>Wins</span><strong id="battleWins">0</strong></div>
+                        <div class="wm-stat"><span>Volume</span><strong id="volume">Ξ 0</strong></div>
+                    </div>
+
+                    <div class="wm-links">
+                        <a href="#" class="wm-link">🎒 Inventory</a>
+                        <a href="#" class="wm-link">⚙️ Settings</a>
+                        <a href="#" class="wm-link">💬 Support</a>
+                    </div>
+
+                    <button id="wmLogoutBtn" class="wm-logout">➜] Log Out</button>
+                    </div>
                 </div>
             </div>
+        </header>
+
+
+      <section class="banner">
+        <div class="banner-text">
+          <h1>Introducing Rare Pokémon Drops!</h1>
+          <p>Catch exclusive Mega Pokémon with dynamic NFT attributes.</p>
+          <button class="btn-primary">Explore Now</button>
         </div>
+        <img src="" class="banner-img" alt="Pokémon Banner" />
+      </section>
 
-    </nav>
-
-    <header class="hero" id="homeSection">
-
-        <div class="hero-left">
-            <img src="assets/sprites.png" alt="Pokemon Group">
+      <section class="stats">
+        <h3>Trainer Stats</h3>
+        <div class="stats-grid">
+          <div class="stat-card">
+            <h4>Total Pokémon</h4>
+            <p id="totalPokemon">0</p>
+          </div>
+          <div class="stat-card">
+            <h4>Owned NFTs</h4>
+            <p id="ownedNFTs">0</p>
+          </div>
+          <div class="stat-card">
+            <h4>Battle Wins</h4>
+            <p id="battleWins">0</p>
+          </div>
+          <div class="stat-card">
+            <h4>Trading Volume</h4>
+            <p id="volume">Ξ 0</p>
+          </div>
         </div>
+      </section>
 
-        <div class="hero-center">
-            <h1 class="title">NOMEKOP</h1>
-            <h1 class="title">BEQUEST</h1>
-            <div class="hero-buttons">
-                <a href="lobby.html" id="navPlayGames">
-                    <button class="btn play">PLAY GAMES</button>
-                </a>
-            </div>
-            <p class="sub-text">Catch • Train • Battle • Trade</p>
+      <!-- Marketplace Section (hidden by default) -->
+    <section id="marketplaceSection" class="marketplace hidden">
+      <div class="market-header">
+        <h2>Pokémon Marketplace</h2>
+      </div>
+
+      <!-- Filter Row -->
+      <div class="filter-bar">
+        <input type="text" id="searchBox" placeholder="Search Pokémon..." />
+
+        <div class="type-filters">
+        <button class="type-btn" data-type="all">All Types</button>
+        <button class="type-btn" data-type="bug">
+          <img src="assets/types/bug.png" alt="Bug" /> Bug
+        </button>
+        <button class="type-btn" data-type="dark">
+          <img src="assets/types/dark.png" alt="Dark" /> Dark
+        </button>
+        <button class="type-btn" data-type="dragon">
+          <img src="assets/types/dragon.png" alt="Dragon" /> Dragon
+        </button>
+        <button class="type-btn" data-type="electric">
+          <img src="assets/types/electric.png" alt="Electric" /> Electric
+        </button>
+        <button class="type-btn" data-type="fairy">
+          <img src="assets/types/fairy.png" alt="Fairy" /> Fairy
+        </button>
+        <button class="type-btn" data-type="fire">    
+          <img src="assets/types/fire.png" alt="Fire" /> Fire
+        </button>
+        <button class="type-btn" data-type="flying">
+          <img src="assets/types/flying.png" alt="flying" /> Flying
+        </button>
+        <button class="type-btn" data-type="ghost">
+          <img src="assets/types/ghost.png" alt="Ghost" /> Ghost
+        </button>
+        <button class="type-btn" data-type="grass">
+          <img src="assets/types/grass.png" alt="Grass" /> Grass
+        </button>
+        <button class="type-btn" data-type="ground">
+          <img src="assets/types/ground.png" alt="Ground" /> Ground
+        </button>
+        <button class="type-btn" data-type="ice">
+          <img src="assets/types/ice.png" alt="Ice" /> Ice
+        </button>
+        <button class="type-btn" data-type="normal">
+          <img src="assets/types/normal.png" alt="Normal" /> Normal
+        </button>
+        <button class="type-btn" data-type="poison">
+          <img src="assets/types/poison.png" alt="Poison" /> Poison
+        </button>
+        <button class="type-btn" data-type="psychic">
+          <img src="assets/types/psychic.png" alt="Psychic" /> Psychic
+        </button>
+        <button class="type-btn" data-type="rock">
+          <img src="assets/types/rock.png" alt="Rock" /> Rock
+        </button>
+        <button class="type-btn" data-type="steel">
+          <img src="assets/types/steel.png" alt="Steel" /> Steel
+        </button>
+        <button class="type-btn" data-type="water">
+          <img src="assets/types/water.png" alt="Water" /> Water
+        </button>
+      </div>
+
+
+        <div class="rarity-filters">
+          <button class="filter-btn" data-rarity="all">All</button>
+          <button class="filter-btn" data-rarity="1">Common</button>
+          <button class="filter-btn" data-rarity="2">Uncommon</button>
+          <button class="filter-btn" data-rarity="3">Rare</button>
+          <button class="filter-btn" data-rarity="4">Epic</button>
+          <button class="filter-btn" data-rarity="5">Legendary</button>
         </div>
+      </div>
 
-        <div class="hero-right">
-            <img src="assets/kind1.png" alt="Trainer Red">
-        </div>
 
-        <div id="walletPopup" class="wallet-popup" aria-hidden="true">
-        <div class="wallet-popup-backdrop"></div>
+      <div id="marketGrid" class="nft-grid">
+      </div>
+    </section>
 
-        <div class="wallet-popup-panel" role="dialog" aria-modal="true">
-            <h2 class="wallet-popup-title">Connect Wallet</h2>
-            <p class="wallet-popup-message">Please connect your wallet to continue.</p>
+    </main>
+  </div>
 
-            <div class="wallet-popup-actions">
-                <button id="popupConnectBtn" class="wallet-btn wallet-btn-primary">Connect Now</button>
-                <button id="popupCloseBtn" class="wallet-btn wallet-btn-secondary">Cancel</button>
-            </div>
-
-            <div id="modalStatus" class="wallet-popup-status"></div>
-        </div>
-    </div>
-
-    </header>
-
-    <footer>
-        <p>© 2025 Nomekop Bequest. All rights reserved.</p>
-    </footer>
-
-    <!-- index.html -->
-    <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
-    <script src="script/app.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
+  <script src="script/dashboard.js"></script>
 </body>
 </html>
