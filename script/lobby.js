@@ -1124,8 +1124,8 @@ function createBattle(playerSpriteFile, opponent) {
     //////////////////////////////////////////////////////////////
 
     function updateSprites() {
-        playerSprite.src = `pokeSprites/${playerTeam[currentPlayer].sprite}`;
-        oppSprite.src = `pokeSprites/${enemyTeam[currentEnemy].sprite}`;
+        playerSprite.src = `/assets/pokeSprites/${playerTeam[currentPlayer].sprite}`;
+        oppSprite.src = `/assets/pokeSprites/${enemyTeam[currentEnemy].sprite}`;
         updateHP();
     }
 
@@ -1392,10 +1392,10 @@ function createBattle(playerSpriteFile, opponent) {
 
         if (state === "win") {
             title.textContent = "YOU WIN!";
-            sprite.src = `pokeSprites/${playerTeam[0].sprite}`;
+            sprite.src = `/assets/pokeSprites/${playerTeam[0].sprite}`;
         } else {
             title.textContent = "YOU LOSE!";
-            sprite.src = `pokeSprites/${enemyTeam[0].sprite}`;
+            sprite.src = `/assets/pokeSprites/${enemyTeam[0].sprite}`;
         }
 
         winnerOverlay.setAttribute("aria-hidden", "false");
@@ -1426,14 +1426,14 @@ function showWinnerScreen(result, playerSpriteFile, opponent) {
     // WIN or LOSE text + sprite
     if (result === "win") {
         title.textContent = "YOU WIN!";
-        sprite.src = `pokeSprites/${playerSpriteFile}`;
+        sprite.src = `/assets/pokeSprites/${playerSpriteFile}`;
 
         victorySound.currentTime = 0;
         victorySound.volume = 1.0;
         victorySound.play().catch(()=>{});
     } else {
         title.textContent = "YOU LOSE!";
-        sprite.src = `pokeSprites/${opponent.sprite}`;
+        sprite.src = `/assets/pokeSprites/${opponent.sprite}`;
 
         defeatSound.currentTime = 0;
         defeatSound.volume = 1.0;
@@ -1738,7 +1738,7 @@ document.addEventListener("DOMContentLoaded", () => {
             box.classList.add("sprite-box");
 
             const img = document.createElement("img");
-            img.src = `pokeSprites/${file}`;
+            img.src = `/assets/pokeSprites/${file}`;
             img.alt = file;
             box.appendChild(img);
 
@@ -1812,7 +1812,7 @@ document.addEventListener("DOMContentLoaded", () => {
     (function preloadSprites() {
         spriteFiles.forEach(f => {
             const img = new Image();
-            img.src = `pokeSprites/${f}`;
+            img.src = `/assets/pokeSprites/${f}`;
         });
     })();
 
@@ -1825,8 +1825,8 @@ document.addEventListener("DOMContentLoaded", () => {
         }
 
         // set sprites and names
-        vsPlayerSprite.src = `pokeSprites/${spriteFiles[0]}`; // player choice; change as needed
-        vsOppSprite.src = `pokeSprites/${currentOpponent.sprite}`;
+        vsPlayerSprite.src = `/assets/pokeSprites/${spriteFiles[0]}`; // player choice; change as needed
+        vsOppSprite.src = `/assets/pokeSprites/${currentOpponent.sprite}`;
         vsPlayerName.textContent = "";
         vsOppName.textContent = currentOpponent.name;
 
@@ -1905,7 +1905,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         selectedTeam.forEach(sprite => {
             let img = document.createElement("img");
-            img.src = "pokeSprites/" + sprite;
+            img.src = "/assets/pokeSprites/" + sprite;
             slotArea.appendChild(img);
         });
     }
@@ -1942,7 +1942,7 @@ document.addEventListener("DOMContentLoaded", () => {
         currentSelectedSprite = spriteName;
 
         // Update slider
-        document.getElementById("sliderSprite").src = "pokeSprites/" + spriteName;
+        document.getElementById("sliderSprite").src = "/assets/pokeSprites/" + spriteName;
 
         // Update text
         document.getElementById("infoName").textContent = data.name;

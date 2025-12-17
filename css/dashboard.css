@@ -203,7 +203,7 @@ a {
 /* Sidebar */
 .sidebar {
   background: #121417;
-  width: 200px;
+  width: 170px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -240,7 +240,7 @@ nav li:hover, nav li.active {
 }
 
 .icon {
-  font-size: 1.2em;
+  font-size: 20px;
 }
 
 /* Support section */
@@ -293,6 +293,8 @@ nav li:hover, nav li.active {
 }
 
 .banner-img {
+  position: relative;
+  right: 5%;
   width: 280px;
   animation: float 4s ease-in-out infinite;
 }
@@ -318,6 +320,7 @@ nav li:hover, nav li.active {
 }
 
 .stats h3 {
+  text-align: center;
   margin-bottom: 20px;
   color: #00bcd4;
 }
@@ -350,185 +353,6 @@ nav li:hover, nav li.active {
 .stat-card p {
   font-size: 1.4em;
   color: #fff;
-}
-
-/* ========== Marketplace Section ========== */
-.marketplace {
-  background: #14161c;
-  border-radius: 16px;
-  padding: 20px;
-  margin-top: 20px;
-  box-shadow: inset 0 0 10px rgba(255,255,255,0.05);
-}
-
-.marketplace.hidden {
-  display: none;
-}
-
-.market-header h2 {
-  color: #facc15;
-  font-size: 1.4rem;
-  margin-bottom: 16px;
-}
-
-/* Filter Bar Row */
-.filter-bar {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  gap: 10px;
-  margin-bottom: 20px;
-  background: #1a1c23;
-  padding: 12px;
-  border-radius: 10px;
-}
-
-#searchBox {
-  flex: 1;
-  padding: 8px 12px;
-  border-radius: 8px;
-  border: none;
-  background: #0f1117;
-  color: #fff;
-  font-size: 0.9rem;
-}
-
-.rarity-filters {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
-
-.filter-btn {
-  background: #1f2330;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 8px 12px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-.filter-btn:hover, .filter-btn.active {
-  background: #facc15;
-  color: #000;
-}
-
-.nft-grid {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-  justify-content: flex-start;
-}
-
-.pokemon-card {
-  background: #1c2028;
-  border-radius: 14px;
-  padding: 12px;
-  text-align: center;
-  width: 200px;
-  cursor: pointer;
-  transition: all 0.3s ease;
-}
-.pokemon-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 0 15px rgba(250, 204, 21, 0.4);
-}
-
-.pokemon-card img {
-  width: 100%;
-  border-radius: 10px;
-}
-
-.rarity-badge {
-  display: inline-block;
-  margin-top: 6px;
-  padding: 4px 8px;
-  border-radius: 6px;
-  font-weight: 600;
-}
-
-/* Modal */
-.details-modal {
-  display: none;
-  position: fixed;
-  inset: 0;
-  background: rgba(0,0,0,0.8);
-  justify-content: center;
-  align-items: center;
-  z-index: 999;
-}
-
-.details-content {
-  background: #1b1e27;
-  border-radius: 20px;
-  padding: 20px;
-  width: 480px;
-  max-height: 80vh;
-  overflow-y: auto;
-  color: #fff;
-  position: relative;
-}
-
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-
-/* ========== Type Filter Icons ========== */
-.type-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  align-items: center;
-}
-
-.type-btn {
-  display: flex;
-  align-items: center;
-  gap: 6px;
-  background: #1f2330;
-  color: #fff;
-  border: none;
-  border-radius: 8px;
-  padding: 6px 10px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: 0.2s ease;
-}
-
-.type-btn img {
-  width: 18px;
-  height: 18px;
-  object-fit: contain;
-  filter: drop-shadow(0 0 2px rgba(255,255,255,0.2));
-}
-
-.type-btn:hover,
-.type-btn.active {
-  background: #facc15;
-  color: #000;
-}
-
-/* ========== Type icons under cards ========== */
-/* ========== Type icons under cards ========== */
-.type-icons {
-  display: flex;
-  justify-content: center;
-  gap: 5px;
-  margin-top: 6px;
-}
-
-.type-icons img {
-  width: 20px;
-  height: 20px;
-  border-radius: 4px;
-  background: #222;
-  padding: 2px;
-  filter: drop-shadow(0 0 2px rgba(0,0,0,0.4));
 }
 
 

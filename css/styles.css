@@ -1,21 +1,282 @@
 @import url('https://fonts.googleapis.com/css2?family=BBH+Sans+Hegarty&family=Honk&display=swap');
 
-/* ================= GLOBAL ================= */
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-    font-family: "Coiny", system-ui;
-    font-weight: 500;
-    font-style: normal;
-    
+/* General layout */
+body {
+  background: #0b0c10;
+  color: #fff;
+  font-family: 'Poppins', sans-serif;
+  margin: 0;
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
 }
 
-body {
+.dashboard-container {
+  display: flex;
+  width: 100%;
+}
+
+a {
+    text-decoration: none;
+    font-weight: 600;
+    transition: 0.2s;
+    color: white;
+}
+
+/* //////////////// */
+/*      WALLET      */
+/* //////////////// */
+.wallet-container {
+  position: relative;
+  display: inline-block;
+}
+
+.wallet-btn {
+    position: relative;
+    background: #ffcb05;
+    color: #2b2b2b;
+    right: 33%;
+    font-weight: 600;
+    border: none;
+    padding: 10px 16px;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.wallet-btn:hover {
+  background: #ffd84d;
+}
+
+.wallet-menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  background: #1a1c21;
+  border-radius: 14px;
+  width: 200px;
+  box-shadow: 0 4px 24px rgba(0,0,0,0.4);
+  color: white;
+  overflow: hidden;
+  transform: translateY(-10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.25s ease;
+  z-index: 999;
+}
+
+.wallet-menu[aria-hidden="false"] {
+  transform: translateY(0);
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.wallet-menu-card {
+  padding: 16px;
+}
+
+.wm-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border-bottom: 1px solid #333;
+  padding-bottom: 10px;
+}
+
+.wm-avatar {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  border: 2px solid #ffcb05;
+}
+
+.wm-info h4 {
+  margin: 0;
+  font-size: 1rem;
+}
+
+.wm-profile-btn {
+  background: #27292f;
+  border: none;
+  color: #ddd;
+  padding: 4px 8px;
+  border-radius: 8px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.wm-profile-btn:hover {
+  background: #3b3e46;
+}
+
+.wm-address {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 12px;
+  font-size: 0.9rem;
+}
+
+.wm-icon-btn {
+  background: none;
+  border: none;
+  color: #ccc;
+  cursor: pointer;
+  font-size: 1.1rem;
+  margin-left: 5px;
+  transition: color 0.2s;
+}
+
+.wm-icon-btn:hover {
+  color: #ffcb05;
+}
+
+.wm-balance {
+  margin-top: 10px;
+  font-size: 0.9rem;
+}
+
+.wm-network {
+  font-size: 0.8rem;
+  color: #ffcb05;
+}
+
+.wm-stats {
+  display: flex;
+  justify-content: space-between;
+  background: #202228;
+  padding: 10px;
+  margin-top: 10px;
+  border-radius: 10px;
+}
+
+.wm-stat {
+  text-align: center;
+}
+
+.wm-stat span {
+  display: block;
+  color: #aaa;
+  font-size: 0.75rem;
+}
+
+.wm-stat strong {
+  color: #fff;
+  font-size: 1rem;
+}
+
+.wm-links {
+  margin-top: 12px;
+  display: flex;
+  flex-direction: column;
+}
+
+.wm-link {
+  color: #ccc;
+  text-decoration: none;
+  padding: 6px 0;
+  transition: color 0.2s;
+}
+
+.wm-link:hover {
+  color: #ffcb05;
+}
+
+.wm-logout {
+  width: 100%;
+  margin-top: 14px;
+  background: #c53030;
+  color: white;
+  border: none;
+  padding: 8px 0;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.3s;
+}
+
+.wm-logout:hover {
+  background: #e53e3e;
+}
+
+
+/* Sidebar */
+.sidebar {
+  background: #121417;
+  width: 170px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 20px;
+  box-shadow: 5px 0 20px rgba(0, 0, 0, 0.5);
+}
+
+.logo img {
+  width: 150px;
+  margin: 0 auto;
+  display: block;
+}
+
+nav ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 30px;
+}
+
+nav li {
+  padding: 14px 20px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+nav li:hover, nav li.active {
+  background: #1e2128;
+  color: #00bcd4;
+}
+
+.icon {
+  font-size: 1.2em;
+}
+
+/* Support section */
+.support {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  text-align: center;
+  padding-top: 20px;
+  font-size: 0.9em;
+  color: #aaa;
+}
+
+/* Main content */
+.main-content {
+    flex-grow: 1;
+    padding: 20px 40px;
+    overflow-y: auto;
+}
+
+.top-bars {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.top-bars h2 {
+  color: #facc15;
+}
+
+.play-lobby {
     background: url("/backgrounds/new-background.jpg");
-    background-repeat: no-repeat;
     background-size: cover;
-    z-index: -100;
+    background-repeat: no-repeat;
+    width: 100%;
+    height: 80%;
+    border-radius: 15px;
 }
 
 /* ================= HERO ================= */
@@ -28,12 +289,12 @@ body {
 
 .hero-left img {    
     padding-top: 50px;
-    width: 500px;
+    width: 350px;
     z-index: -1;
 }
 .hero-right img {
     padding-top: 50px;
-    width: 450px;
+    width: 370px;
     z-index: -1;
 }
 
@@ -43,7 +304,8 @@ body {
 }
 
 .title {
-    font-size: 75px;
+    display: flex;
+    font-size: 65px;
     font-weight: 900;
     color: white;
     text-shadow: 0px 3px 8px rgba(0,0,0,0.4);
@@ -116,161 +378,3 @@ footer {
         margin-bottom: 20px;
     }
 }
-
-/* Buttons */
-
-.wallet-btn-primary {
-    position: absolute;
-    width: 50%;
-    left: 5%;
-    bottom: 5%;
-    background: #20c060;
-    color: #ffffff;
-}
-
-.wallet-btn-secondary {
-    position: absolute;
-    width: 38%;
-    right: 5%;
-    bottom: 5%;
-    background: #e0e0e0;
-    color: #333333;
-}
-
-.wallet-btn:hover {
-    opacity: 0.9;
-}
-
-/* Status message */
-.wallet-popup-status {
-    margin-top: 6px;
-    font-size: 13px;
-    color: #666;
-    min-height: 18px;
-}
-
-/* ///////////////////////// */
-/*      WALLET DROPDOWN      */
-/* ///////////////////////// */
-
-.wallet-menu {
-  opacity: 0;
-  transition: opacity 0.2s ease-in-out;
-}
-.wallet-menu[aria-hidden="false"] {
-  opacity: 1;
-}
-
-.wallet-menu {
-  position: absolute; /* make sure parent/header is position:relative */
-  top: calc(100% + 8px); /* sits below the button */
-  right: 3%; /* align to right — adjust to match your button placement */
-  z-index: 9999;
-  display: none;
-}
-
-.wallet-menu[aria-hidden="false"] {
-  display: block;
-}
-
-.wallet-menu-card {
-  width: 200px;
-  background: rgba(255,255,255,0.35);
-  backdrop-filter: blur(10px);
-  color: #111;
-  border-radius: 12px;
-  box-shadow: 0 8px 30px rgba(2,6,23,0.2);
-  padding: 10px;
-  font-family: 'Inter', Arial, sans-serif;
-}
-
-.wm-row {
-    display:flex;
-    align-items:center; 
-    gap:8px; 
-    margin:6px 0; 
-}
-
-.wm-header {
-    right: 18%;
-    justify-content:space-between; 
-    padding-bottom:6px; 
-    border-bottom:1px solid #eee; 
-}
-
-.wm-rows {
-    display:flex;
-    flex-direction: column;
-    align-items:center; 
-    gap:8px; 
-    margin:6px 0; 
-}
-
-.wm-headers {
-    position: absolute;
-    right: 18%;
-    justify-content:space-between; 
-    padding-bottom:6px; 
-    border-bottom:1px solid #eee; 
-}
-
-.wm-balance { 
-    font-size:13px; 
-    color:#0a7; 
-}
-
-.wm-actions { 
-    justify-content:space-between; 
-    padding-top:6px; 
-    padding-bottom:6px; 
-}
-.wm-btn {
-  background: #f1f4f8;
-  border: none;
-  padding:6px 10px;
-  border-radius:8px;
-  cursor:pointer;
-  font-weight:600;
-  font-size:13px;
-}
-
-.wm-btn:hover { 
-    opacity:0.95; 
-}
-
-.wm-link {
-  color: #1366d6;
-  text-decoration: none;
-  font-weight:600;
-  font-size:13px;
-}
-.wm-link:hover { 
-    text-decoration:underline; 
-}
-
-.wm-profile { 
-    justify-content:space-between; 
-    font-size:13px; 
-    color:#444; 
-    border-top:1px solid #f0f2f5; 
-    padding-top:8px; 
-}
-
-.wm-footer { 
-    justify-content:flex-end; 
-    padding-top:8px; 
-}
-.wm-logout { 
-    background:#ff6b6b; 
-    width: 100%;
-    color:white; 
-    border:none; 
-    padding:8px 10px; 
-    border-radius:8px; 
-}
-.wm-logout:hover { 
-    opacity:0.95; 
-}
-
-/* OPTIONAL: ensure header container is positioned so absolute menu aligns */
-.header-right { position: relative; } /* add this class to your header wrapper containing the button */

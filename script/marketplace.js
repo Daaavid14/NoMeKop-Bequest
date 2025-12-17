@@ -1,11 +1,6 @@
+window.marketplaceLoaded = false;
+
 console.log("🔥 Marketplace script loaded");
-
-// Wait for wallet connection before loading NFTs
-document.addEventListener("walletConnected", () => {
-  console.log("🎯 Wallet connected event detected — loading NFTs...");
-  if (typeof loadNFTs === "function") loadNFTs();
-});
-
 
 let provider;
 let signer;
@@ -25,6 +20,13 @@ const grid = document.getElementById("marketGrid") || document.getElementById("n
 const connectBtn = document.getElementById("connectWalletBtn");
 
 const TYPE_ICON_PATH = "./assets/types/";
+
+// Wait for wallet connection before loading NFTs
+document.addEventListener("walletConnected", async () => {
+  console.log("🎯 Wallet connected — auto loading NFTs...");
+  await loadNFTs();
+});
+
 
 function createTypeIcons(typeString) {
   if (!typeString) return "";
@@ -71,18 +73,18 @@ async function connectWallet() {
 }
 
 async function loadNFTs() {
+  if (window.marketplaceLoaded) return;
+  window.marketplaceLoaded = true;
+
   try {
     if (!window.provider) {
       console.log("⏳ Waiting for wallet provider...");
-      return; // stop silently until walletConnected fires
+      return;
     }
-    const provider = window.provider;
 
-
-    const nft = new ethers.Contract(NFT_CONTRACT, nftAbi, provider);
+    const nft = new ethers.Contract(NFT_CONTRACT, nftAbi, window.provider);
     const total = await nft.nextTokenId();
     console.log(`🧩 Found ${total} NFTs on chain`);
-
 
     if (total == 0) {
       grid.innerHTML = `<p style="text-align:center;color:white;">No Pokémon minted yet!</p>`;
@@ -90,6 +92,7 @@ async function loadNFTs() {
     }
 
     grid.innerHTML = "";
+    allNFTs = []; // reset for filtering
 
     for (let i = 0; i < total; i++) {
       try {
@@ -97,61 +100,64 @@ async function loadNFTs() {
         const rarity = await nft.rarityLevel(i);
         const metaUrl = uri.replace("ipfs://", "https://ipfs.io/ipfs/");
         const response = await fetch(metaUrl);
-
         if (!response.ok) throw new Error("404 or unreachable");
+
         const metadata = await response.json();
+        if (!metadata.name || !metadata.image) continue;
 
-        if (!metadata.name || !metadata.image)  {
-          console.warn(`⚠️ Skipping Token ${i} — invalid metadata`);
-          continue;
-        }
+        const types = metadata.type ? metadata.type.toLowerCase().split("/") : [];
 
-        console.log(`✅ Loaded metadata for Token ${i + 1}:`, metadata);
-
-        // Card container
         const card = document.createElement("div");
         card.className = "pokemon-card";
+        card.dataset.name = metadata.name.toLowerCase();
+        card.dataset.rarity = rarity.toString();
+        card.dataset.types = types.join(",");
+
         card.innerHTML = `
-          <img src="${metadata.image.replace('ipfs://', 'https://ipfs.io/ipfs/')}" class="nft-img" alt="${metadata.name}" />
+          <img src="${metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/")}" class="nft-img" alt="${metadata.name}" />
           <h3>${metadata.name}</h3>
           <div class="types">${createTypeIcons(metadata.type)}</div>
           ${getRarityBadge(Number(rarity))}
         `;
 
-        // Open modal with stats
         card.addEventListener("click", () => openDetailsModal(metadata, rarity));
-
         grid.appendChild(card);
+        allNFTs.push(card);
       } catch (e) {
         console.warn(`⚠️ Error loading token ${i}:`, e.message);
       }
     }
+
+    // ✅ Apply initial filter (if any)
+    applyFilters();
+
   } catch (err) {
     console.error("❌ Error loading NFTs:", err);
   }
 }
 
+
 // 🌈 Dual-type gradient support + accent color for stats
 function getTypeColor(typeString) {
   const colorMap = {
-    fire: "#ff6f43b9",
-    water: "#42a4f5b5",
-    grass: "#66bb6abb",
-    electric: "#ffeb3bb4",  
-    ice: "#4fc2f7b4",
-    fighting: "#ef5350b4",
-    poison: "#ab47bcb4",
-    ground: "#8d6e63b4",
-    flying: "#5c6bc0b4",
-    psychic: "#ec4079bfb4",
-    bug: "#9ccc65b4",
-    rock: "#bdbdbdb4",
-    ghost: "#7e57c2b4",
-    dragon: "#26c6dab4",
-    dark: "#616161b4",
-    steel: "#90a4aeb4",
-    fairy: "#f48fb1b4",
-    normal: "#bdbdbdb4",
+    fire: "#ff6f43ea",
+    water: "#42a4f5ea",
+    grass: "#66bb6aea",
+    electric: "#ffeb3bea",  
+    ice: "#4fc2f7ea",
+    fighting: "#ef5350ea",
+    poison: "#ab47bcea",
+    ground: "#8d6e63ea",
+    flying: "#5c6bc0ea",
+    psychic: "#ec4079bfea",
+    bug: "#9ccc65ea",
+    rock: "#bdbdbdea",
+    ghost: "#7e57c2ea",
+    dragon: "#26c6daea",
+    dark: "#616161ea",
+    steel: "#90a4aeea",
+    fairy: "#f48fb1ea",
+    normal: "#bdbdbdea",
   };
 
   const types = typeString.split("/").map(t => t.trim().toLowerCase());
@@ -268,58 +274,6 @@ const rarityButtons = document.querySelectorAll(".filter-btn");
 
 let allNFTs = [];
 
-async function loadNFTs() {
-  try {
-    const nft = new ethers.Contract(NFT_CONTRACT, nftAbi, provider);
-    const total = await nft.nextTokenId();
-
-    if (total == 0) {
-      grid.innerHTML = `<p>No Pokémon minted yet!</p>`;
-      return;
-    }
-
-    grid.innerHTML = "";
-    allNFTs = [];
-
-    for (let i = 0; i < total; i++) {
-      const uri = await nft.tokenURI(i);
-      const rarity = await nft.rarityLevel(i);
-      const metaUrl = uri.replace("ipfs://", "https://ipfs.io/ipfs/");
-      const res = await fetch(metaUrl);
-      const metadata = await res.json();
-
-      const types = metadata.type ? metadata.type.toLowerCase().split("/") : [];
-
-      const card = document.createElement("div");
-      card.className = "pokemon-card";
-      card.dataset.name = metadata.name.toLowerCase();
-      card.dataset.rarity = rarity.toString();
-      card.dataset.types = types.join(",");
-
-      card.innerHTML = `
-        <img src="${metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/")}" alt="${metadata.name}" />
-        <h3>${metadata.name}</h3>
-        <div>${getRarityBadge(Number(rarity))}</div>
-        <div class="type-icons">
-          ${types
-            .map(
-              t => `
-              <img src="assets/types/${t}.png" alt="${t}" title="${t}" />
-            `
-            )
-            .join("")}
-        </div>
-
-      `;
-
-      card.addEventListener("click", () => openDetailsModal(metadata, rarity));
-      grid.appendChild(card);
-      allNFTs.push(card);
-    }
-  } catch (err) {
-    console.error("❌ Error loading NFTs:", err);
-  }
-}
 
 // ====================
 // FILTER LOGIC

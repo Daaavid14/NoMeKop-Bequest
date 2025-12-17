@@ -50,6 +50,8 @@ async function connectWallet() {
 
   try {
     provider = new ethers.BrowserProvider(window.ethereum);
+    window.provider = provider; // ✅ Make provider accessible globally
+    document.dispatchEvent(new Event("walletConnected")); // 🔔 Tell marketplace.js the wallet is ready
     await provider.send("eth_requestAccounts", []);
     signer = await provider.getSigner();
     userAddress = await signer.getAddress();
@@ -205,51 +207,20 @@ if (walletMenu) {
   // ======================================
   // AUTO RECONNECT
   // ======================================
+window.addEventListener("load", async () => {
   if (window.ethereum) {
-    window.ethereum.on("accountsChanged", () => window.location.reload());
-    window.ethereum.on("chainChanged", () => window.location.reload());
-
     try {
       const accounts = await window.ethereum.request({ method: "eth_accounts" });
-      if (accounts.length > 0) await connectWallet();
+      if (accounts.length > 0) {
+        console.log("🔄 Auto reconnecting wallet...");
+        await connectWallet();
+        document.dispatchEvent(new Event("walletConnected"));
+      }
     } catch (err) {
-      console.warn("Auto reconnect failed:", err);
+      console.error("Auto reconnect failed:", err);
     }
   }
 });
 
-// ======================================
-// MARKETPLACE INTEGRATION
-// ======================================
-
-const marketplaceNav = document.getElementById("marketplaceNav");
-const marketplaceSection = document.getElementById("marketplaceSection");
-const bannerSection = document.querySelector(".banner");
-const statsSection = document.querySelector(".stats");
-
-// Hide marketplace initially
-marketplaceSection.classList.add("hidden");
-
-// Marketplace click logic
-marketplaceNav.addEventListener("click", () => {
-  bannerSection.style.display = "none";
-  statsSection.style.display = "none";
-  marketplaceSection.classList.remove("hidden");
-
-  if (!document.getElementById("marketplaceScript")) {
-  const script = document.createElement("script");
-  script.src = "script/marketplace.js";
-  script.id = "marketplaceScript";
-  script.onload = () => {
-    console.log("🧩 Marketplace script loaded successfully");
-    if (typeof loadNFTs === "function") loadNFTs(); // ✅ run only once after script loads
-  };
-  document.body.appendChild(script);
-} else {
-  // If already loaded, just refresh display
-  if (typeof loadNFTs === "function") loadNFTs();
-}
 
 });
-
-

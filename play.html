@@ -8,38 +8,102 @@
     <link rel="shortcut icon" href="backgrounds/pokemon-ball.png" type="image/x-icon">
 </head>
 <body>
+    
+<div class="dashboard-container">
+    <!-- Sidebar -->
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="/backgrounds/nomekop.png" alt="Pokémon NFT Logo" />
+      </div>
+      <nav>
+        <ul>
+          <a href="index.html"><li class=""><i class="icon"></i> Home</li></a>
+          <a href="marketplace.html"><li><i class="icon">👜</i> Marketplace</li></a>
+          <a href="#"><li><i class="icon">⚔️</i> Battle Arena</li></a>
+          <li><i class="icon">💰</i> Staking</li>
+        </ul>
+      </nav>
+      <div class="support">
+        <p>Support Center</p>
+        <p>Whitepaper</p>
+      </div>
+    </aside>
 
-    <header class="hero" id="homeSection">
+    <!-- Main Content -->
+    <main class="main-content">
+        <header class="top-bars">
+          <h2>Battle Arena</h2>
 
-        <div class="hero-left">
-            <img src="assets/sprites.png" alt="Pokemon Group">
-        </div>
+            <!-- Wrap both elements for hover consistency -->
+            <div class="wallet-container">
+                <button id="connectWalletBtn" class="wallet-btn">CONNECT WALLET</button>
 
-        <div class="hero-center">
-            <h1 class="title">NOMEKOP</h1>
-            <h1 class="title">BEQUEST</h1>
-            <div class="hero-buttons">
-                <a href="lobby.html" id="navPlayGames">
-                    <button class="btn play">PLAY GAMES</button>
-                </a>
+                <div id="walletMenu" class="wallet-menu" aria-hidden="true">
+                    <div class="wallet-menu-card">
+                        <div class="wm-header">
+                            <img src="" alt="Trainer Avatar" class="wm-avatar" id="wmAvatar" />
+                            <div class="wm-info">
+                            <h4 id="wmTrainerName">Trainer</h4>
+                            <button class="wm-profile-btn">View Profile</button>
+                        </div>
+                    </div>
+
+                    <div class="wm-address">
+                        <span id="wmAddressShort">0x0000...0000</span>
+                        <div class="wm-address-actions">
+                            <button id="wmCopyBtn" class="wm-icon-btn" title="Copy Address">📋</button>
+                            <a id="wmExplorer" target="_blank" rel="noopener" class="wm-icon-btn" title="View on Explorer">🔗</a>
+                        </div>
+                    </div>
+
+                    <div class="wm-balance">
+                        <p id="wmBalance">— ETH | — PKC</p>
+                        <span id="wmNetwork" class="wm-network">—</span>
+                    </div>
+
+                    <div class="wm-stats">
+                        <div class="wm-stat"><span>Pokémon</span><strong id="ownedNFTs">0</strong></div>
+                        <div class="wm-stat"><span>Wins</span><strong id="battleWins">0</strong></div>
+                        <div class="wm-stat"><span>Volume</span><strong id="volume">Ξ 0</strong></div>
+                    </div>
+
+                    <div class="wm-links">
+                        <a href="#" class="wm-link">🎒 Inventory</a>
+                        <a href="#" class="wm-link">⚙️ Settings</a>
+                        <a href="#" class="wm-link">💬 Support</a>
+                    </div>
+
+                    <button id="wmLogoutBtn" class="wm-logout">➜] Log Out</button>
+                    </div>
+                </div>
             </div>
-            <p class="sub-text">Catch • Train • Battle • Trade</p>
-        </div>
+        </header>
 
-        <div class="hero-right">
-            <img src="assets/kind1.png" alt="Trainer Red">
-        </div>
-
-        <div id="walletPopup" class="wallet-popup" aria-hidden="true">
-        <div class="wallet-popup-backdrop"></div>
+        <section class="play-lobby">
+            <header class="hero" id="homeSection">
+                <div class="hero-left">
+                    <img src="assets/sprites.png" alt="Pokemon Group">
+                </div>
+                <div class="hero-center">
+                    <h1 class="title">NOMEKOP BEQUEST</h1>
+                    <div class="hero-buttons">
+                        <a href="lobby.html" id="navPlayGames">
+                            <button class="btn play">PLAY GAME</button>
+                        </a>
+                    </div>
+                        <p class="sub-text">Train • Battle • Trade</p>
+                </div>
+                <div class="hero-right">
+                    <img src="assets/kind1.png" alt="Trainer Red">
+                </div>
+                <div id="walletPopup" class="wallet-popup" aria-hidden="true">
+                    <div class="wallet-popup-backdrop"></div>
+                </div>
+            </header>
+        </section>
         
-    </div>
-
-    </header>
-
-    <footer>
-        <p>© 2025 Nomekop Bequest. All rights reserved.</p>
-    </footer>
+    </main>
+</div>
 
     <!-- index.html -->
     <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
