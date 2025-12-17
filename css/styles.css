@@ -271,7 +271,7 @@ nav li:hover, nav li.active {
 }
 
 .play-lobby {
-    background: url("/backgrounds/new-background.jpg");
+    background: url("/backgrounds/newBackground.jpg");
     background-size: cover;
     background-repeat: no-repeat;
     width: 100%;
