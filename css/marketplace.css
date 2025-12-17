@@ -203,7 +203,7 @@ a {
 /* Sidebar */
 .sidebar {
   background: #121417;
-  width: 200px;
+  width: 170px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -324,8 +324,9 @@ nav li:hover, nav li.active {
 .nft-grid {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 10px;
   justify-content: flex-start;
+
 }
 
 .pokemon-card {
@@ -333,7 +334,7 @@ nav li:hover, nav li.active {
   border-radius: 14px;
   padding: 12px;
   text-align: center;
-  width: 200px;
+  width: 233px;
   cursor: pointer;
   transition: all 0.3s ease;
 }
@@ -343,7 +344,7 @@ nav li:hover, nav li.active {
 }
 
 .pokemon-card img {
-  width: 100%;
+  width: 80%;
   border-radius: 10px;
 }
 

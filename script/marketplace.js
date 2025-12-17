@@ -114,10 +114,10 @@ async function loadNFTs() {
         card.dataset.types = types.join(",");
 
         card.innerHTML = `
-          <img src="${metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/")}" class="nft-img" alt="${metadata.name}" />
-          <h3>${metadata.name}</h3>
-          <div class="types">${createTypeIcons(metadata.type)}</div>
           ${getRarityBadge(Number(rarity))}
+          <img src="${metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/")}" class="nft-img" alt="${metadata.name}" />
+          <div class="types">${createTypeIcons(metadata.type)}</div>
+          <h3>${metadata.name}</h3>
         `;
 
         card.addEventListener("click", () => openDetailsModal(metadata, rarity));
