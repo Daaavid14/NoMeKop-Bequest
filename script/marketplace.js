@@ -107,22 +107,48 @@ async function loadNFTs() {
 
         const types = metadata.type ? metadata.type.toLowerCase().split("/") : [];
 
+        // ===============================
+        // AXIE-STYLE CARD RENDERING
+        // ===============================
         const card = document.createElement("div");
         card.className = "pokemon-card";
-        card.dataset.name = metadata.name.toLowerCase();
-        card.dataset.rarity = rarity.toString();
-        card.dataset.types = types.join(",");
+        card.style.background = getTypeGradient(metadata.type.split("/")[0]); // First type sets gradient
+
+        const typeIcons = metadata.type
+          .split("/")
+          .map(
+            t =>
+              `<img src="./assets/types/${t.trim().toLowerCase()}.png" alt="${t}" class="type-icon"/>`
+          )
+          .join("");
+
+        // 💰 Price placeholder (or integrate marketplace price later)
+        const priceETH = (Math.random() * 0.005 + 0.001).toFixed(3); // temp display only
 
         card.innerHTML = `
-          ${getRarityBadge(Number(rarity))}
-          <img src="${metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/")}" class="nft-img" alt="${metadata.name}" />
-          <div class="types">${createTypeIcons(metadata.type)}</div>
-          <h3>${metadata.name}</h3>
+          <div class="card-header">
+            <span class="nft-id">#${i}</span>
+            <div class="type-icons">${typeIcons}</div>
+          </div>
+
+          <div class="card-image">
+            <img src="${metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/")}" alt="${metadata.name}" />
+          </div>
+
+          <div class="card-price">
+            <span class="eth-symbol">ETH</span> ${priceETH}
+          </div>
+
+          <div class="card-footer">
+            <h3 class="nft-name">${metadata.name}</h3>
+            ${getRarityBadge(Number(rarity))}
+          </div>
         `;
 
+        // When clicked, open details modal
         card.addEventListener("click", () => openDetailsModal(metadata, rarity));
         grid.appendChild(card);
-        allNFTs.push(card);
+
       } catch (e) {
         console.warn(`⚠️ Error loading token ${i}:`, e.message);
       }
@@ -314,5 +340,26 @@ rarityButtons.forEach(btn => {
   });
 });
 
+function getTypeGradient(type) {
+  const colors = {
+    Fire: "linear-gradient(180deg, #ff6a0026, #b83c0026)",
+    Water: "linear-gradient(180deg, #00b4ff26, #0044aa26)",
+    Grass: "linear-gradient(180deg, #00c85326, #00662226)",
+    Electric: "linear-gradient(180deg, #ffeb3b26, #bfa30026)",
+    Psychic: "linear-gradient(180deg, #d500f926, #6a00a326)",
+    Ice: "linear-gradient(180deg, #00e5ff26, #0091ea26)",
+    Rock: "linear-gradient(180deg, #a1887f26, #4e342e26)",
+    Ground: "linear-gradient(180deg, #d7ccc826, #8d6e6326)",
+    Flying: "linear-gradient(180deg, #81d4fa26, #0277bd26)",
+    Bug: "linear-gradient(180deg, #aed58126, #33691e26)",
+    Ghost: "linear-gradient(180deg, #7b1fa226, #311b9226)",
+    Dragon: "linear-gradient(180deg, #7e57c226, #311b9226)",
+    Steel: "linear-gradient(180deg, #b0bec526, #546e7a26)",
+    Dark: "linear-gradient(180deg, #37474f26, #00000026)",
+    Fairy: "linear-gradient(180deg, #f8bbd026, #c2185b26)",
+    Normal: "linear-gradient(180deg, #e0e0e026, #75757526)",
+  };
+  return colors[type] || "linear-gradient(180deg, #444, #222)";
+}
 
 
