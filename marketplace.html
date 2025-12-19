@@ -17,10 +17,10 @@
       </div>
       <nav>
         <ul>
-          <a href="index.html"><li class=""><i class="icon">🏠︎</i> Home</li></a>
-          <a href="#"><li><i class="icon">👜</i> Marketplace</li></a>
-          <a href="play.html"><li><i class="icon">⚔️</i> Battle Arena</li></a>
-          <li><i class="icon">💰</i> Staking</li>
+          <a href="index.html"><li class=""> Home</li></a>
+          <a href="#"><li> Marketplace</li></a>
+          <a href="play.html"><li> Game</li></a>
+          <li> Staking</li>
         </ul>
       </nav>
       <div class="support">
@@ -85,7 +85,7 @@
 
       <!-- Filter Row -->
       <div class="filter-bar">
-        <input type="text" id="searchBox" placeholder="Search Nomekop..." />
+        <input type="text" id="searchBox" placeholder="Search Nomekop" />
 
         <div class="rarity-filters">
           <button class="filter-btn" data-rarity="all">All</button>
@@ -149,10 +149,17 @@
           <button class="type-btn" data-type="water">
             <img src="assets/types/water.png" alt="Water" /> Water
           </button>
+
+          <div class="price-sort">
+            <select id="priceFilter">
+              <option value="default">Sort by ID</option>
+              <option value="low">Price: Low - High</option>
+              <option value="high">Price: High - Low</option>
+            </select>
+          </div>
+
         </div>
-
       </div>
-
 
       <div id="marketGrid" class="nft-grid">
       </div>

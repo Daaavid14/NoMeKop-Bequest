@@ -4,6 +4,7 @@
   "image": "ipfs://bafybeialp2okoiyl24adqzygeadfybv2cgysmcezdpsnnswlwd6jm3pcla/Abomasnow_Mega.gif",
   "hp": 490,
   "type": "Grass/Ice",
+  "price": 0.025,
 
   "attributes": [
     { "trait_type": "HP", "value": 490 },
@@ -25,8 +26,8 @@
     { "trait_type": "Skill 2 Effect", "value": "" },
 
     { "trait_type": "Skill 3 Name", "value": "Frostbite Spore" },
-    { "trait_type": "Skill 3 Attack", "value": 15 },
-    { "trait_type": "Skill 3 Shield", "value": 0 },
+    { "trait_type": "Skill 3 Attack", "value": 45 },
+    { "trait_type": "Skill 3 Shield", "value": 10 },
     { "trait_type": "Skill 3 Cost", "value": 1 },
     { "trait_type": "Skill 3 Effect", "value": "freeze" },
 

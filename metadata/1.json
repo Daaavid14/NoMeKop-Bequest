@@ -4,6 +4,7 @@
   "image": "ipfs://bafybeialp2okoiyl24adqzygeadfybv2cgysmcezdpsnnswlwd6jm3pcla/Aerodactyl_Mega.gif",
   "hp": 320,
   "type": "Rock/Flying",
+  "price": 0.040,
 
   "attributes": [
     { "trait_type": "HP", "value": 320 },
@@ -25,14 +26,14 @@
     { "trait_type": "Skill 2 Effect", "value": "" },
 
     { "trait_type": "Skill 3 Name", "value": "Quake Howl" },
-    { "trait_type": "Skill 3 Attack", "value": 20 },
-    { "trait_type": "Skill 3 Shield", "value": 0 },
+    { "trait_type": "Skill 3 Attack", "value": 30 },
+    { "trait_type": "Skill 3 Shield", "value": 10 },
     { "trait_type": "Skill 3 Cost", "value": 1 },
     { "trait_type": "Skill 3 Effect", "value": "weaken" },
 
     { "trait_type": "Skill 4 Name", "value": "Stone Guard" },
     { "trait_type": "Skill 4 Attack", "value": 0 },
-    { "trait_type": "Skill 4 Shield", "value": 40 },
+    { "trait_type": "Skill 4 Shield", "value": 60 },
     { "trait_type": "Skill 4 Cost", "value": 1 },
     { "trait_type": "Skill 4 Effect", "value": "" }
   ]

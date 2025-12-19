@@ -6,7 +6,7 @@ let provider;
 let signer;
 let userAddress;
 
-const NFT_CONTRACT = "0x76b977265Dd333D16194547CBaa68135EEF270DC";
+const NFT_CONTRACT = "0xf4bF661eA0a71F687482d6E0E58DeeAA119e53d5";
 const MARKET_CONTRACT = "0xE21f02Ba72524dd567aC5d56619feFA42C8EC03F";
 
 const nftAbi = [
@@ -114,6 +114,10 @@ async function loadNFTs() {
         card.className = "pokemon-card";
         card.style.background = getTypeGradient(metadata.type.split("/")[0]); // First type sets gradient
 
+        card.dataset.id = i;
+        card.dataset.rarity = rarity;
+        card.dataset.price = metadata.price;
+
         const typeIcons = metadata.type
           .split("/")
           .map(
@@ -123,11 +127,11 @@ async function loadNFTs() {
           .join("");
 
         // 💰 Price placeholder (or integrate marketplace price later)
-        const priceETH = (Math.random() * 0.005 + 0.001).toFixed(3); // temp display only
+        const priceETH = metadata.price ?? "0.004";
 
         card.innerHTML = `
           <div class="card-header">
-            <span class="nft-id">#${i}</span>
+            <div class="nft-id">#${String(i).padStart(5, "0")}</div>
             <div class="type-icons">${typeIcons}</div>
           </div>
 
@@ -146,7 +150,13 @@ async function loadNFTs() {
         `;
 
         // When clicked, open details modal
-        card.addEventListener("click", () => openDetailsModal(metadata, rarity));
+        // When clicked, open details modal with token ID and price
+        card.addEventListener("click", () => {
+          metadata.tokenId = i; // attach token ID to metadata
+          metadata.priceETH = priceETH; // attach displayed price
+          openDetailsModal(metadata, rarity);
+        });
+
         grid.appendChild(card);
 
       } catch (e) {
@@ -218,6 +228,10 @@ function setTypeParticles(typeString) {
 
 
 function openDetailsModal(metadata, rarity) {
+  // 🧹 Clean up old injected info before adding a new one
+document.querySelectorAll(".modal-extra-info").forEach(el => el.remove());
+
+
   // 🎨 Apply type-based gradient theme
   const typeColors = getTypeColor(metadata.type);
   const modalContent = document.querySelector(".details-content");
@@ -240,6 +254,24 @@ function openDetailsModal(metadata, rarity) {
   // Fill types and rarity
   modalTypes.innerHTML = createTypeIcons(metadata.type);
   modalRarity.innerHTML = getRarityBadge(Number(rarity));
+
+  // === Insert Unique ID + Price (Axie-style) ===
+  let pokemonId = metadata.tokenId ?? metadata.id ?? "N/A";
+  if (pokemonId !== "N/A") {
+    pokemonId = String(pokemonId).padStart(5, "0"); // Adds leading zeros
+  }
+
+  const priceETH = metadata.priceETH ?? "0.004"; // Replace if your real price field is different
+
+  const infoHTML = `
+    <div class="modal-extra-info">
+      <div class="pokemon-id">#${pokemonId}</div>
+      <div class="eth-price"><span class="eth-symbol">ETH</span> ${priceETH}</div>
+    </div>
+  `;
+
+// ✅ Insert only once above the Pokémon name
+modalName.insertAdjacentHTML("beforebegin", infoHTML);
 
   // Base stats
   const stats = metadata.attributes.filter(a =>
@@ -290,55 +322,108 @@ function openDetailsModal(metadata, rarity) {
 
 connectBtn.addEventListener("click", connectWallet);
 
-// ====================
-// FILTER SYSTEM (Types + Rarity + Search)
-// ====================
+/*************************************************
+ * 🧩 Enhanced Marketplace Filters (Type + Rarity + Price + Search)
+ *************************************************/
 
 const searchBox = document.getElementById("searchBox");
 const typeButtons = document.querySelectorAll(".type-btn");
 const rarityButtons = document.querySelectorAll(".filter-btn");
+const priceDropdown = document.getElementById("priceFilter");
 
-let allNFTs = [];
+let allNFTs = []; // store all NFTs after loading
 
+// 🟡 Called after NFT loading is complete
+function onNFTsLoaded(nfts) {
+  allNFTs = nfts.map((n, i) => ({ ...n, index: i })); // store original order
+  applyFilters();
+}
 
-// ====================
-// FILTER LOGIC
-// ====================
-
+// 🔹 Main Filter Function
 function applyFilters() {
   const query = searchBox ? searchBox.value.toLowerCase() : "";
   const activeRarity = document.querySelector(".filter-btn.active")?.dataset.rarity || "all";
   const activeType = document.querySelector(".type-btn.active")?.dataset.type || "all";
+  const priceSort = priceDropdown ? priceDropdown.value : "default";
 
-  allNFTs.forEach(card => {
-    const matchesSearch = card.dataset.name.includes(query);
-    const matchesRarity = activeRarity === "all" || card.dataset.rarity === activeRarity;
-    const matchesType = activeType === "all" || card.dataset.types.includes(activeType);
+  // Select all cards
+  const cards = Array.from(document.querySelectorAll(".pokemon-card"));
 
-    card.style.display = matchesSearch && matchesRarity && matchesType ? "" : "none";
+  // Apply type + rarity + search filters
+  cards.forEach((card) => {
+    const name = card.querySelector(".nft-name")?.textContent.toLowerCase() || "";
+    const rarity = card.dataset.rarity || "";
+    const typeIcons = Array.from(card.querySelectorAll(".type-icon"));
+    const typeNames = typeIcons.map((t) => t.alt.toLowerCase());
+    const price = parseFloat(card.dataset.price || "0");
+
+    const matchesSearch = name.includes(query);
+    const matchesType = activeType === "all" || typeNames.includes(activeType);
+    const matchesRarity = activeRarity === "all" || rarity === activeRarity;
+
+    if (matchesSearch && matchesType && matchesRarity) {
+      card.style.display = "";
+      card.dataset.price = price;
+    } else {
+      card.style.display = "none";
+    }
   });
+
+  // 🟢 Sorting
+  const visibleCards = cards.filter((c) => c.style.display !== "none");
+  let sortedCards;
+
+  if (priceSort === "low") {
+    sortedCards = visibleCards.sort((a, b) => parseFloat(a.dataset.price) - parseFloat(b.dataset.price));
+  } else if (priceSort === "high") {
+    sortedCards = visibleCards.sort((a, b) => parseFloat(b.dataset.price) - parseFloat(a.dataset.price));
+  } else {
+    // default — by unique ID
+    sortedCards = visibleCards.sort((a, b) => parseInt(a.dataset.id) - parseInt(b.dataset.id));
+  }
+
+  const grid = document.getElementById("marketGrid");
+  sortedCards.forEach((card) => grid.appendChild(card));
 }
 
-// Search
-if (searchBox) searchBox.addEventListener("input", applyFilters);
+/*************************************************
+ * 🧩 Event Listeners
+ *************************************************/
 
-// Type buttons
-typeButtons.forEach(btn => {
+// 🔸 Search Filter
+if (searchBox) {
+  searchBox.addEventListener("input", applyFilters);
+}
+
+// 🔸 Type Filter Buttons
+typeButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
-    typeButtons.forEach(b => b.classList.remove("active"));
+    typeButtons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     applyFilters();
   });
 });
 
-// Rarity buttons
-rarityButtons.forEach(btn => {
+// 🔸 Rarity Filter Buttons
+rarityButtons.forEach((btn) => {
   btn.addEventListener("click", () => {
-    rarityButtons.forEach(b => b.classList.remove("active"));
+    rarityButtons.forEach((b) => b.classList.remove("active"));
     btn.classList.add("active");
     applyFilters();
   });
 });
+
+// 🔸 Price Sort Dropdown
+if (priceDropdown) {
+  priceDropdown.addEventListener("change", applyFilters);
+}
+
+/*************************************************
+ * 🧩 Helper — Call this after your NFT load
+ *************************************************/
+// Example: inside your loadNFTs() after cards are displayed
+// onNFTsLoaded(loadedNFTArray);
+
 
 function getTypeGradient(type) {
   const colors = {

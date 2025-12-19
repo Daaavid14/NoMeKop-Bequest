@@ -4,6 +4,7 @@
   "image": "ipfs://bafybeialp2okoiyl24adqzygeadfybv2cgysmcezdpsnnswlwd6jm3pcla/Altaria_Mega.gif",
   "hp": 210,
   "type": "Dragon/Flying",
+  "price": 0.055,
 
   "attributes": [
     { "trait_type": "HP", "value": 210 },
@@ -26,13 +27,13 @@
 
     { "trait_type": "Skill 3 Name", "value": "Fairy Pulse" },
     { "trait_type": "Skill 3 Attack", "value": 20 },
-    { "trait_type": "Skill 3 Shield", "value": 0 },
+    { "trait_type": "Skill 3 Shield", "value": 10 },
     { "trait_type": "Skill 3 Cost", "value": 1 },
     { "trait_type": "Skill 3 Effect", "value": "weaken" },
 
     { "trait_type": "Skill 4 Name", "value": "Mist Barrier" },
     { "trait_type": "Skill 4 Attack", "value": 0 },
-    { "trait_type": "Skill 4 Shield", "value": 40 },
+    { "trait_type": "Skill 4 Shield", "value": 50 },
     { "trait_type": "Skill 4 Cost", "value": 1 },
     { "trait_type": "Skill 4 Effect", "value": "" }
   ]

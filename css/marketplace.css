@@ -99,7 +99,7 @@ a {
   background: #27292f;
   border: none;
   color: #ddd;
-  padding: 4px 8px;
+  padding: 5px 10px;
   border-radius: 8px;
   font-size: 0.8rem;
   cursor: pointer;
@@ -330,13 +330,38 @@ nav li:hover, nav li.active {
 
 }
 
+option {
+  background: #1e2128;
+}
+
+.price-sort {
+  position: relative;
+  right: -350px;
+  z-index: 1000;
+}
+
+.price-sort select {
+  background: #1f2330;
+  border: 1px solid #1f2330;
+  color: white;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: 0.2s ease;
+}
+
+.price-sort select:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
 /* ===============================
    AXIE-STYLE CARD DESIGN
    =============================== */
 
 .pokemon-card {
   background: #1c2c28;
-  width: 228px;
+  width: 230px;
   border-radius: 16px;
   box-shadow: 0 0 14px rgba(0, 0, 0, 0.35);
   overflow: hidden;
@@ -370,6 +395,19 @@ nav li:hover, nav li.active {
   height: 25px;
   margin-left: 3px;
   filter: drop-shadow(0 0 3px rgba(0, 0, 0, 0.4));
+  animation: typeIcon 3s infinite ease-in-out alternate;
+  border-radius: 50%;
+}
+
+@keyframes typeIcon {
+  from {
+    box-shadow: 0 0 10px rgba(255,255,255,0.2),
+                inset 0 0 20px rgba(255,255,255,0.1);
+  }
+  to {
+    box-shadow: 0 0 35px rgba(255,255,255,0.4),
+                inset 0 0 25px rgba(255,255,255,0.3);
+  }
 }
 
 /* Image area */
@@ -395,7 +433,8 @@ nav li:hover, nav li.active {
 
 .eth-symbol {
   color: #fff;
-  font-size: 20px;
+  font-size: 18px;
+  font-weight: 300;
   margin-right: 4px;
 }
 
@@ -443,6 +482,41 @@ nav li:hover, nav li.active {
 }
 
 
+.modal-extra-info {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 6px;
+  color: #fff;
+  font-weight: 600;
+  font-size: 18px;
+}
+
+.modal-extra-info .pokemon-id {
+  position: absolute;
+  font-size: 25px;
+  padding: 3px;
+  top: -30px;
+  left: 1%;
+  color: white;
+}
+
+.modal-extra-info .eth-price {
+  color: #ffffff;
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.modal-extra-info .eth-symbol {
+  color: #fff;
+  font-size: 18px;
+  vertical-align: middle;
+  margin-right: 2px;
+}
+
+
+
 /* ========================= */
 /* NEW FIXED MODAL LAYOUT    */
 /* ========================= */
@@ -462,7 +536,7 @@ nav li:hover, nav li.active {
   border-radius: 20px;
   color: white;
   width: 70%;
-  height: 550px;
+  height: 530px;
   display: flex;
   position: relative;
   animation: fadeIn 0.3s ease;
@@ -499,6 +573,9 @@ nav li:hover, nav li.active {
 
 .types {
   display: flex;
+  position:absolute;
+  top: -30px;
+  right: -30px;
   justify-content: center;
   margin-bottom: 10px;
 }
@@ -618,6 +695,8 @@ nav li:hover, nav li.active {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
   gap: 10px;
+  position: relative;
+  top: -30px;
   margin-right: 20px;
 }
 
