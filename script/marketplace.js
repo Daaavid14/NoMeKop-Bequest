@@ -1,20 +1,201 @@
-window.marketplaceLoaded = false;
+// ============================================
+// 🔥 FIXED & MERGED MARKETPLACE SCRIPT (FINAL)
+// ============================================
 
+window.marketplaceLoaded = false;
 console.log("🔥 Marketplace script loaded");
 
 let provider;
 let signer;
+let marketContract;
+let nftContract;
 let userAddress;
 
-const NFT_CONTRACT = "0xf4bF661eA0a71F687482d6E0E58DeeAA119e53d5";
-const MARKET_CONTRACT = "0xE21f02Ba72524dd567aC5d56619feFA42C8EC03F";
+const NFT_CONTRACT = "0xd9371a6c64d11936Dec44a8fC1a9CA3EBcA9e07c";
+const TOKEN_CONTRACT = "0xe909fB039ad0e5a2457ad4Ed9bb8393E926C9CC8";
+const MARKET_CONTRACT = "0x7F56c14911Ab4235f8f9b11F88d74a7A7D3E4727";
 
+// ✅ NFT ABI (same as before)
 const nftAbi = [
   "function nextTokenId() view returns (uint256)",
   "function tokenURI(uint256 tokenId) view returns (string memory)",
   "function ownerOf(uint256 tokenId) view returns (address)",
-  "function rarityLevel(uint256 tokenId) view returns (uint256)"
+  "function rarityLevel(uint256 tokenId) view returns (uint256)",
+  "function approve(address to, uint256 tokenId)",
+  "function getApproved(uint256 tokenId) view returns (address)",
+  "function isApprovedForAll(address owner, address operator) view returns (bool)",
+  "function setApprovalForAll(address operator, bool approved)",
+  "function transferFrom(address from, address to, uint256 tokenId)"
 ];
+
+// ✅ Marketplace ABI (includes nftContract())
+const marketAbi = [
+  {
+    "inputs": [
+      { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+      { "internalType": "uint256", "name": "price", "type": "uint256" }
+    ],
+    "name": "listNFT",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }],
+    "name": "buyNFT",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }],
+    "name": "cancelListing",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "nftContract",
+    "outputs": [{ "internalType": "address", "name": "", "type": "address" }],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{ "internalType": "uint256", "name": "tokenId", "type": "uint256" }],
+    "name": "getListing",
+    "outputs": [
+      {
+        "components": [
+          { "internalType": "uint256", "name": "tokenId", "type": "uint256" },
+          { "internalType": "address", "name": "seller", "type": "address" },
+          { "internalType": "uint256", "name": "price", "type": "uint256" },
+          { "internalType": "bool", "name": "active", "type": "bool" }
+        ],
+        "internalType": "struct Marketplace.Listing",
+        "name": "",
+        "type": "tuple"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
+];
+
+// ===================================================
+// 🔧 INITIALIZE PROVIDER, SIGNER, CONTRACTS
+// ===================================================
+async function initMarketplace() {
+  try {
+    provider = new ethers.BrowserProvider(window.ethereum);
+    signer = await provider.getSigner();
+    userAddress = await signer.getAddress();
+
+    marketContract = new ethers.Contract(MARKET_CONTRACT, marketAbi, signer);
+
+    // ✅ Fetch NFT address from Marketplace
+    const nftAddress = await marketContract.nftContract();
+    console.log("🎯 NFT Contract (from marketplace):", nftAddress);
+
+    nftContract = new ethers.Contract(nftAddress, nftAbi, signer);
+
+    window.nftContract = nftContract;
+    window.marketContract = marketContract;
+    console.log("✅ Marketplace initialized!");
+  } catch (err) {
+    console.error("❌ initMarketplace error:", err);
+  }
+}
+
+// ===================================================
+// 💰 SELL NFT
+// ===================================================
+async function sellNFT(tokenId, priceEth) {
+  try {
+    if (!marketContract || !nftContract) await initMarketplace();
+
+    const userAddr = await signer.getAddress();
+    const owner = await nftContract.ownerOf(tokenId);
+    if (owner.toLowerCase() !== userAddr.toLowerCase()) {
+      alert("❌ You do not own this NFT!");
+      return;
+    }
+
+    const priceWei = ethers.parseEther(priceEth.toString());
+    const approved = await nftContract.isApprovedForAll(userAddr, MARKET_CONTRACT);
+
+    if (!approved) {
+      console.log("🧾 Approving Marketplace...");
+      const txApprove = await nftContract.setApprovalForAll(MARKET_CONTRACT, true);
+      await txApprove.wait();
+      console.log("✅ Marketplace approved!");
+    }
+
+    console.log(`💰 Listing NFT #${tokenId} for ${priceEth} ETH`);
+    const tx = await marketContract.listNFT(tokenId, priceWei);
+    await tx.wait(2);
+    alert(`✅ Pokémon #${tokenId} listed for ${priceEth} ETH`);
+  } catch (err) {
+    console.error("❌ Sell error:", err);
+    alert(`Sell failed: ${err.reason || err.message}`);
+  }
+}
+
+// ===================================================
+// 🛒 BUY NFT
+// ===================================================
+async function buyNFT(tokenId, priceEth) {
+  try {
+    const priceWei = ethers.parseEther(priceEth.toString());
+    const tx = await marketContract.buyNFT(tokenId, { value: priceWei });
+    await tx.wait(2);
+    alert(`✅ Bought Pokémon #${tokenId} for ${priceEth} ETH`);
+  } catch (err) {
+    console.error("❌ Buy error:", err);
+    alert(`Buy failed: ${err.reason || err.message}`);
+  }
+}
+
+// ===================================================
+// 🟣 MODAL & BUTTON HANDLERS
+// ===================================================
+let selectedTokenId = null;
+
+document.addEventListener("click", async (e) => {
+  if (e.target.classList.contains("sell-btn")) {
+    selectedTokenId = e.target.dataset.id;
+    document.getElementById("sellModal").classList.remove("hidden");
+  }
+
+  if (e.target.classList.contains("buy-btn")) {
+    const tokenId = e.target.dataset.id;
+    const price = e.target.textContent.replace(/[^\d.]/g, "");
+    await buyNFT(tokenId, price);
+  }
+});
+
+document.getElementById("confirmSellBtn").addEventListener("click", async () => {
+  const priceInput = document.getElementById("sellPriceInput").value.trim();
+  if (!priceInput || isNaN(priceInput)) return alert("Please enter a valid price.");
+  await sellNFT(selectedTokenId, priceInput);
+  document.getElementById("sellModal").classList.add("hidden");
+});
+
+document.getElementById("cancelSellBtn").addEventListener("click", () => {
+  document.getElementById("sellModal").classList.add("hidden");
+});
+
+// ===================================================
+// 🚀 ON LOAD
+// ===================================================
+window.addEventListener("load", async () => {
+  if (window.ethereum) {
+    console.log("🔗 Connecting wallet...");
+    await initMarketplace();
+    await loadNFTs();
+  }
+});
+
 
 const grid = document.getElementById("marketGrid") || document.getElementById("nftGrid");
 const connectBtn = document.getElementById("connectWalletBtn");
@@ -69,6 +250,7 @@ async function connectWallet() {
   connectBtn.style.background = "#22c55e";
 
   console.log("✅ Wallet connected:", userAddress);
+  await initMarketplace();
   loadNFTs();
 }
 
@@ -80,6 +262,15 @@ async function loadNFTs() {
     if (!window.provider) {
       console.log("⏳ Waiting for wallet provider...");
       return;
+    }
+
+    // ✅ Ensure signer is available (avoids undefined errors)
+    if (!signer) {
+      try {
+        signer = await window.provider.getSigner();
+      } catch (err) {
+        console.warn("⚠️ Signer not found — running in read-only mode");
+      }
     }
 
     const nft = new ethers.Contract(NFT_CONTRACT, nftAbi, window.provider);
@@ -118,6 +309,53 @@ async function loadNFTs() {
         card.dataset.rarity = rarity;
         card.dataset.price = metadata.price;
 
+        const tokenId = i; // ✅ FIXED — use loop index as token ID
+
+        // 🧩 Add Buy & Sell buttons
+        const actionDiv = document.createElement("div");
+        actionDiv.classList.add("card-actions");
+
+        // ✅ On-chain ownership check
+        let isOwner = false;
+        try {
+          if (signer) {
+            const userAddr = (await signer.getAddress()).toLowerCase();
+
+            // 🔹 Fetch actual owner from blockchain
+            const nftOwner = (await nft.ownerOf(tokenId)).toLowerCase();
+
+            if (userAddr === nftOwner) {
+              isOwner = true;
+              console.log(`✅ You own NFT #${tokenId}`);
+            } else {
+              console.log(`❌ NFT #${tokenId} is owned by: ${nftOwner}`);
+            }
+          }
+        } catch (err) {
+          console.warn("⚠️ Ownership check error:", err.message);
+        }
+
+
+        // ✅ Conditional Button Rendering
+        if (isOwner) {
+          const sellBtn = document.createElement("button");
+          sellBtn.textContent = "Sell";
+          sellBtn.classList.add("sell-btn");
+          sellBtn.dataset.id = tokenId;
+          actionDiv.appendChild(sellBtn);
+        } else if (metadata.listed && metadata.price) {
+          const buyBtn = document.createElement("button");
+          buyBtn.textContent = `Buy (${metadata.price} ETH)`;
+          buyBtn.classList.add("buy-btn");
+          buyBtn.dataset.id = tokenId;
+          actionDiv.appendChild(buyBtn);
+        } else if (!signer) {
+          const connectBtn = document.createElement("button");
+          connectBtn.textContent = "Connect Wallet to Trade";
+          connectBtn.classList.add("buy-btn");
+          actionDiv.appendChild(connectBtn);
+        }
+
         const typeIcons = metadata.type
           .split("/")
           .map(
@@ -126,7 +364,6 @@ async function loadNFTs() {
           )
           .join("");
 
-        // 💰 Price placeholder (or integrate marketplace price later)
         const priceETH = metadata.price ?? "0.004";
 
         card.innerHTML = `
@@ -149,11 +386,15 @@ async function loadNFTs() {
           </div>
         `;
 
-        // When clicked, open details modal
-        // When clicked, open details modal with token ID and price
+
+        if (actionDiv.children.length > 0) {
+          card.appendChild(actionDiv);
+        }
+        
+        // 🧩 Open modal when clicked
         card.addEventListener("click", () => {
-          metadata.tokenId = i; // attach token ID to metadata
-          metadata.priceETH = priceETH; // attach displayed price
+          metadata.tokenId = i;
+          metadata.priceETH = priceETH;
           openDetailsModal(metadata, rarity);
         });
 
@@ -164,13 +405,14 @@ async function loadNFTs() {
       }
     }
 
-    // ✅ Apply initial filter (if any)
+    // ✅ Apply initial filter
     applyFilters();
 
   } catch (err) {
     console.error("❌ Error loading NFTs:", err);
   }
 }
+
 
 
 // 🌈 Dual-type gradient support + accent color for stats
@@ -350,7 +592,7 @@ function applyFilters() {
   const cards = Array.from(document.querySelectorAll(".pokemon-card"));
 
   // Apply type + rarity + search filters
-  cards.forEach((card) => {
+    cards.forEach((card) => {
     const name = card.querySelector(".nft-name")?.textContent.toLowerCase() || "";
     const rarity = card.dataset.rarity || "";
     const typeIcons = Array.from(card.querySelectorAll(".type-icon"));
@@ -446,5 +688,3 @@ function getTypeGradient(type) {
   };
   return colors[type] || "linear-gradient(180deg, #444, #222)";
 }
-
-

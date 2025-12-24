@@ -7,9 +7,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   console.log("⚡ Dashboard Loaded — Wallet + Contract Ready");
 
   // -------------------- CONTRACT CONFIG --------------------
-  const NFT_CONTRACT = "0xf4bF661eA0a71F687482d6E0E58DeeAA119e53d5";
+  const NFT_CONTRACT = "0xd9371a6c64d11936Dec44a8fC1a9CA3EBcA9e07c";
   const TOKEN_CONTRACT = "0xe909fB039ad0e5a2457ad4Ed9bb8393E926C9CC8";
-  const MARKET_CONTRACT = "0xE21f02Ba72524dd567aC5d56619feFA42C8EC03F";
+  const MARKET_CONTRACT = "0x7FA35D4C5b94112058Cc6dE8ABa002E337b20D08";
   const POKECOIN_CONTRACT = TOKEN_CONTRACT;
 
   const nftAbi = [

@@ -203,7 +203,7 @@ a {
 /* Sidebar */
 .sidebar {
   background: #121417;
-  width: 170px;
+  width: 150px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

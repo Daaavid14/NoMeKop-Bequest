@@ -177,7 +177,7 @@
             <img id="modalImage" class="details-img" alt="Pokemon Image" />
             <h2 id="modalName" class="modalName"></h2>
             <div class="types" id="modalTypes"></div>
-            <div id="modalRarity"></div>
+            <div id="modalRarity" class="modalRarity"></div>
 
             <div class="stats">
               <h3>BASE STATS</h3>
@@ -192,8 +192,23 @@
         </div>
       </div>
 
+        <!-- 🧾 Sell NFT Modal -->
+      <div id="sellModal" class="modal-overlay hidden">
+        <div class="modal-content">
+          <h2>List NFT for Sale</h2>
+          <p>Enter the sale price (in ETH):</p>
+          <input type="number" id="sellPriceInput" min="0" step="0.001" placeholder="0.01" />
+          <div class="modal-buttons">
+            <button id="confirmSellBtn" class="confirm-btn">Confirm</button>
+            <button id="cancelSellBtn" class="cancel-btn">Cancel</button>
+          </div>
+        </div>
+      </div>
+
     </main>
   </div>
+  
+
 
   <script type="module" src="script/dashboard.js"></script>
   <script type="module" src="script/marketplace.js"></script>

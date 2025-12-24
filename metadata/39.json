@@ -5,6 +5,8 @@
   "hp": 266,
   "type": "Dragon/Flying",
   "price": 0.060,
+  "listed": true,
+  "owner": "0x0089016d3782Caa6B1F7a184ab12DfA51909fB1b",
 
   "attributes": [
     { "trait_type": "HP", "value": 266 },
