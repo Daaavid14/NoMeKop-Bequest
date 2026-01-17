@@ -228,6 +228,8 @@ async function sellNFT(tokenId, priceEth) {
     const tx = await marketContract.listNFT(tokenId, priceWei);
     await tx.wait(2);
     alert(`✅ Pokémon #${tokenId} listed for ${priceEth} ETH`);
+    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await loadNFTs();
   } catch (err) {
     console.error("❌ Sell error:", err);
     alert(`Sell failed: ${err.reason || err.message}`);
@@ -439,25 +441,31 @@ async function loadNFTs() {
         }
 
 
-        // ✅ Conditional Button Rendering
-        if (isOwner) {
+        // ✅ Updated Button Rendering with real on-chain listing
+        const listing = await marketContract.getListing(tokenId);
+        const isListed = listing.active && listing.price > 0n;
+
+        if (isListed) {
+          // NFT is listed for sale
+          const buyBtn = document.createElement("button");
+          buyBtn.textContent = `Buy (${ethers.formatEther(listing.price)} ETH)`;
+          buyBtn.classList.add("buy-btn");
+          buyBtn.dataset.id = tokenId;
+          actionDiv.appendChild(buyBtn);
+        } else if (isOwner) {
+          // NFT owned by user but not listed
           const sellBtn = document.createElement("button");
           sellBtn.textContent = "Sell";
           sellBtn.classList.add("sell-btn");
           sellBtn.dataset.id = tokenId;
           actionDiv.appendChild(sellBtn);
-        } else if (metadata.listed && metadata.price) {
-          const buyBtn = document.createElement("button");
-          buyBtn.textContent = `Buy (${metadata.price} ETH)`;
-          buyBtn.classList.add("buy-btn");
-          buyBtn.dataset.id = tokenId;
-          actionDiv.appendChild(buyBtn);
         } else if (!signer) {
           const connectBtn = document.createElement("button");
           connectBtn.textContent = "Connect Wallet to Trade";
           connectBtn.classList.add("buy-btn");
           actionDiv.appendChild(connectBtn);
         }
+
 
         const typeIcons = metadata.type
           .split("/")
