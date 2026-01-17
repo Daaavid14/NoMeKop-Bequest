@@ -7,7 +7,7 @@ let userAddress;
 
 const NFT_CONTRACT = "0xBDDC9D6dB298f7486f73abD06083d4B84CDd7521";
 const MARKET_CONTRACT = "0xE21f02Ba72524dd567aC5d56619feFA42C8EC03F";
-const TOKEN_CONTRACT = "0xe909fB039ad0e5a2457ad4Ed9bb8393E926C9CC8";
+const TOKEN_CONTRACT = "0x6E23b691D086Ae9373995092b2783DACBbef225e";
 const IPFS_BASE = "https://ipfs.io/ipfs/bafybeifzfohng4ai33uubclgfxi7z7zmmyca547uwrmtyfecnxflxjjnmm/";
 
 const nftAbi = [

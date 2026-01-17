@@ -11,9 +11,94 @@ let marketContract;
 let nftContract;
 let userAddress;
 
-const NFT_CONTRACT = "0xd9371a6c64d11936Dec44a8fC1a9CA3EBcA9e07c";
-const TOKEN_CONTRACT = "0xe909fB039ad0e5a2457ad4Ed9bb8393E926C9CC8";
+const NFT_CONTRACT = "0xDc74da1175419D36882806D588B8033B1c28E6d7";
+const TOKEN_CONTRACT = "0x6E23b691D086Ae9373995092b2783DACBbef225e";
 const MARKET_CONTRACT = "0x7F56c14911Ab4235f8f9b11F88d74a7A7D3E4727";
+
+// Preferred IPFS gateways (custom Pinata first)
+const IPFS_GATEWAYS = [
+  (hashOrPath) => `https://amethyst-giant-newt-388.mypinata.cloud/ipfs/${hashOrPath}`,
+  (hashOrPath) => `https://gateway.pinata.cloud/ipfs/${hashOrPath}`,
+  (hashOrPath) => `https://dweb.link/ipfs/${hashOrPath}`,
+  (hashOrPath) => `https://cf-ipfs.com/ipfs/${hashOrPath}`,
+  (hashOrPath) => `https://ipfs.io/ipfs/${hashOrPath}`,
+];
+
+// CID remapping for images (user updated GIF folder CID)
+const GIF_CID_OLD = "bafybeialp2okoiyl24adqzygeadfybv2cgysmcezdpsnnswlwd6jm3pcla";
+const GIF_CID_NEW = "bafybeifsnozi4jhmf7ezefai3rlorzo6ihb2ahvomh4os4ligczy55qutm";
+// CID remapping for metadata folder (older mints pointed to wrong CID)
+const META_CID_OLD = "bafybeialp2okoiyl24adqzygeadfybv2cgysmcezdpsnnswlwd6jm3pcla"; // wrong
+// Latest metadata CID (user provided)
+const META_CID_NEW = "bafybeifyeektgpegzb6ajwxdmid2qwexko3v2skp4k6uav4b5yo64x4aku"; // latest
+
+function resolveIpfsToHttp(uri) {
+  if (!uri) return null;
+  if (uri.startsWith("ipfs://")) {
+    const hashPath = uri.slice("ipfs://".length);
+    return IPFS_GATEWAYS.map(g => g(hashPath));
+  }
+  return [uri];
+}
+
+async function fetchIpfsJson(uri) {
+  // Check cache first
+  const cache = JSON.parse(localStorage.getItem("nftMetadataCache") || "{}");
+  if (cache[uri]) {
+    console.log(`📦 Loaded from cache: ${uri.slice(0, 40)}...`);
+    return cache[uri];
+  }
+
+  // Rewrite old metadata CID to the new one if present
+  if (uri && uri.startsWith("ipfs://" + META_CID_OLD)) {
+    uri = uri.replace(META_CID_OLD, META_CID_NEW);
+  }
+  const candidates = resolveIpfsToHttp(uri);
+  
+  for (const url of candidates) {
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 5000); // 5 second timeout per gateway
+      
+      const res = await fetch(url, { signal: controller.signal });
+      clearTimeout(timeoutId);
+      
+      if (res.ok) {
+        const data = await res.json();
+        // Cache the result
+        cache[uri] = data;
+        if (Object.keys(cache).length > 100) {
+          // Keep cache size reasonable
+          delete cache[Object.keys(cache)[0]];
+        }
+        localStorage.setItem("nftMetadataCache", JSON.stringify(cache));
+        console.log(`🌐 Loaded via: ${url}`);
+        return data;
+      }
+    } catch (e) {
+      // try next gateway
+    }
+  }
+  throw new Error("All IPFS gateways failed");
+}
+
+// Simple image URL builder - no async, just returns the URL string
+function getImageUrl(ipfsImage) {
+  if (!ipfsImage) return "";
+  
+  // Rewrite old CID to new CIF if present
+  if (ipfsImage.startsWith("ipfs://" + GIF_CID_OLD)) {
+    ipfsImage = ipfsImage.replace(GIF_CID_OLD, GIF_CID_NEW);
+  }
+  
+  // Extract hash and path
+  if (ipfsImage.startsWith("ipfs://")) {
+    const hashPath = ipfsImage.slice("ipfs://".length);
+    return `https://amethyst-giant-newt-388.mypinata.cloud/ipfs/${hashPath}`;
+  }
+  
+  return ipfsImage;
+}
 
 // ✅ NFT ABI (same as before)
 const nftAbi = [
@@ -93,9 +178,17 @@ async function initMarketplace() {
 
     marketContract = new ethers.Contract(MARKET_CONTRACT, marketAbi, signer);
 
-    // ✅ Fetch NFT address from Marketplace
-    const nftAddress = await marketContract.nftContract();
-    console.log("🎯 NFT Contract (from marketplace):", nftAddress);
+    // ✅ Fetch NFT address from Marketplace; fall back to constant if call fails
+    let nftAddress = NFT_CONTRACT;
+    try {
+      const addr = await marketContract.nftContract();
+      if (addr && addr !== ethers.ZeroAddress) {
+        nftAddress = addr;
+      }
+    } catch (e) {
+      console.warn("⚠️ Could not read nftContract() from marketplace; using NFT_CONTRACT constant.");
+    }
+    console.log("🎯 NFT Contract in use:", nftAddress);
 
     nftContract = new ethers.Contract(nftAddress, nftAbi, signer);
 
@@ -274,11 +367,23 @@ async function loadNFTs() {
     }
 
     const nft = new ethers.Contract(NFT_CONTRACT, nftAbi, window.provider);
-    const total = await nft.nextTokenId();
-    console.log(`🧩 Found ${total} NFTs on chain`);
+    let total = 0;
+    
+    try {
+      total = await nft.nextTokenId();
+      console.log(`🧩 Found ${total} NFTs on chain`);
+    } catch (err) {
+      console.warn("⚠️ Failed to fetch nextTokenId:", err.message);
+    }
 
     if (total == 0) {
-      grid.innerHTML = `<p style="text-align:center;color:white;">No Pokémon minted yet!</p>`;
+      grid.innerHTML = `
+        <div style="grid-column: 1/-1; text-align:center; padding: 60px 20px;">
+          <h3 style="color:white; font-size: 24px;">📭 No Pokémon minted yet</h3>
+          <p style="color:#aaa; margin-top: 10px;">Mint your first Pokémon to get started!</p>
+          <a href="mint.html" style="display: inline-block; margin-top: 20px; padding: 12px 24px; background: #22c55e; color: white; text-decoration: none; border-radius: 6px; font-weight: 600;">Go to Mint Page</a>
+        </div>
+      `;
       return;
     }
 
@@ -289,11 +394,9 @@ async function loadNFTs() {
       try {
         const uri = await nft.tokenURI(i);
         const rarity = await nft.rarityLevel(i);
-        const metaUrl = uri.replace("ipfs://", "https://ipfs.io/ipfs/");
-        const response = await fetch(metaUrl);
-        if (!response.ok) throw new Error("404 or unreachable");
 
-        const metadata = await response.json();
+        // Fetch metadata with gateway fallback
+        const metadata = await fetchIpfsJson(uri);
         if (!metadata.name || !metadata.image) continue;
 
         const types = metadata.type ? metadata.type.toLowerCase().split("/") : [];
@@ -373,7 +476,7 @@ async function loadNFTs() {
           </div>
 
           <div class="card-image">
-            <img src="${metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/")}" alt="${metadata.name}" />
+            <img src="${getImageUrl(metadata.image)}" alt="${metadata.name}" />
           </div>
 
           <div class="card-price">
@@ -490,7 +593,7 @@ document.querySelectorAll(".modal-extra-info").forEach(el => el.remove());
   const modalSkills = document.getElementById("modalSkills");
 
   // Fill image and name
-  modalImage.src = metadata.image.replace("ipfs://", "https://ipfs.io/ipfs/");
+  modalImage.src = getImageUrl(metadata.image);
   modalName.textContent = metadata.name;
 
   // Fill types and rarity

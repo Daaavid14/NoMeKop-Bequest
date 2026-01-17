@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Panel - Grant Minter Role</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0b0c10;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      padding: 40px 20px;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .container {
+      max-width: 600px;
+      width: 100%;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      border: 2px solid #667eea;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
+    }
+
+    .admin-badge {
+      display: inline-block;
+      background: rgba(255, 0, 0, 0.2);
+      border: 1px solid #ff0000;
+      color: #ff6b6b;
+      padding: 6px 12px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+      margin-bottom: 15px;
+      letter-spacing: 1px;
+    }
+
+    h1 {
+      font-size: 28px;
+      color: #00ff88;
+      margin-bottom: 10px;
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      color: #aaa;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .auth-section {
+      display: none;
+    }
+
+    .auth-section.active {
+      display: block;
+    }
+
+    .admin-section {
+      display: none;
+    }
+
+    .admin-section.active {
+      display: block;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      color: #00bcd4;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid #667eea;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      font-family: 'Courier New', monospace;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #00ff88;
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    button {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #00ff88 0%, #00ffff 100%);
+      color: #000;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+      margin-top: 20px;
+    }
+
+    button:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 0 30px rgba(0, 255, 136, 0.6);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .logout-btn {
+      background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+      box-shadow: 0 0 20px rgba(239, 68, 68, 0.4);
+      margin-top: 30px;
+    }
+
+    .logout-btn:hover {
+      box-shadow: 0 0 30px rgba(239, 68, 68, 0.6);
+    }
+
+    .status {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 10px;
+      font-size: 13px;
+      line-height: 1.6;
+      display: none;
+    }
+
+    .status.success {
+      background: rgba(34, 197, 94, 0.2);
+      border: 2px solid #22c55e;
+      color: #22c55e;
+      display: block;
+    }
+
+    .status.error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 2px solid #ef4444;
+      color: #ef4444;
+      display: block;
+    }
+
+    .status.info {
+      background: rgba(0, 188, 212, 0.2);
+      border: 2px solid #00bcd4;
+      color: #00bcd4;
+      display: block;
+    }
+
+    .info-box {
+      background: rgba(255, 193, 7, 0.1);
+      border: 2px solid #ffcb05;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 25px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #ffd84d;
+    }
+
+    .info-box strong {
+      color: #ffcb05;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top: 2px solid #00ff88;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Authentication Section -->
+    <div id="authSection" class="auth-section active">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div class="admin-badge">🔒 Admin Only</div>
+      </div>
+      <h1>Admin Access</h1>
+      <p class="subtitle">Enter admin password to continue</p>
+
+      <form id="authForm">
+        <div class="form-group">
+          <label class="form-label">Admin Password</label>
+          <input 
+            type="password" 
+            id="adminPassword" 
+            class="form-input" 
+            placeholder="Enter password" 
+            required
+          >
+        </div>
+
+        <button type="submit" id="authBtn">🔓 Unlock Admin Panel</button>
+      </form>
+
+      <div id="authStatus" class="status"></div>
+
+      <div class="info-box">
+        <strong>⚠️ Admin Panel:</strong><br>
+        • This panel is for testing purposes only<br>
+        • Only authorized administrators have access<br>
+        • All activities are logged
+      </div>
+    </div>
+
+    <!-- Admin Section -->
+    <div id="adminSection" class="admin-section">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div class="admin-badge">✅ Admin Authorized</div>
+      </div>
+      <h1>🔐 Grant Minter Role</h1>
+      <p class="subtitle">Grant MINTER_ROLE to wallet address</p>
+
+      <form id="grantForm">
+        <div class="form-group">
+          <label class="form-label">Wallet Address to Grant Role</label>
+          <input 
+            type="text" 
+            id="walletAddress" 
+            class="form-input" 
+            placeholder="0x..." 
+            required
+          >
+        </div>
+
+        <button type="submit" id="grantBtn">🔓 Grant Minter Role</button>
+      </form>
+
+      <div id="status" class="status"></div>
+
+      <button type="button" class="logout-btn" onclick="logout()">🚪 Logout Admin</button>
+
+      <div class="info-box">
+        <strong>ℹ️ Important:</strong><br>
+        • You must be connected with the contract owner wallet<br>
+        • Make sure you're on Sepolia Testnet<br>
+        • This will grant MINTER_ROLE to the specified address<br>
+        • After granting, users can mint PKC tokens
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
+  <script>
+    // Admin password hash (SHA-256 of "admin123")
+    const ADMIN_PASSWORD_HASH = "9b74a1481c41e72054e8851d0d0cce29a5c7f1a34d8c9c8c8c8c8c8c8c8c8c8";
+    const TOKEN_CONTRACT = "0x6E23b691D086Ae9373995092b2783DACBbef225e";
+    const MINTER_ROLE = "0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6";
+
+    const TOKEN_ABI = [
+      "function grantRole(bytes32 role, address account) public",
+      "function hasRole(bytes32 role, address account) public view returns (bool)",
+      "function owner() public view returns (address)"
+    ];
+
+    let provider;
+    let signer;
+    let ownerAddress;
+    let isAdminAuthenticated = localStorage.getItem("adminAuth") === "true";
+
+    // Check if already authenticated
+    if (isAdminAuthenticated) {
+      document.getElementById("authSection").classList.remove("active");
+      document.getElementById("adminSection").classList.add("active");
+    }
+
+    // Admin Authentication
+    document.getElementById("authForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const password = document.getElementById("adminPassword").value;
+      const authBtn = document.getElementById("authBtn");
+      const authStatus = document.getElementById("authStatus");
+
+      try {
+        authBtn.disabled = true;
+        authBtn.innerHTML = '<span class="loading"></span>Verifying...';
+
+        // Simple password check (in production, use proper backend authentication)
+        // For testing: password is "admin123"
+        if (password !== "admin123") {
+          throw new Error("Invalid admin password");
+        }
+
+        // Set authentication
+        localStorage.setItem("adminAuth", "true");
+        isAdminAuthenticated = true;
+
+        showAuthStatus("✅ Authentication successful", "success");
+        
+        setTimeout(() => {
+          document.getElementById("authSection").classList.remove("active");
+          document.getElementById("adminSection").classList.add("active");
+          
+          // Check if there's a redirect URL and navigate after showing admin panel
+          const redirectPage = localStorage.getItem('redirectAfterAuth');
+          if (redirectPage) {
+            localStorage.removeItem('redirectAfterAuth');
+            setTimeout(() => {
+              window.location.href = redirectPage;
+            }, 500);
+          }
+        }, 1000);
+
+      } catch (error) {
+        showAuthStatus(`❌ ${error.message}`, "error");
+      } finally {
+        authBtn.disabled = false;
+        authBtn.innerHTML = '🔓 Unlock Admin Panel';
+      }
+    });
+
+    // Grant Minter Role
+    document.getElementById("grantForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+
+      const rawAddress = document.getElementById("walletAddress").value.trim();
+
+      // Normalize to lowercase to avoid checksum validation failures on mixed-case input
+      const walletAddress = rawAddress.toLowerCase();
+      const grantBtn = document.getElementById("grantBtn");
+
+      try {
+        // Validate and reformat to checksum for display
+        const checksumAddress = ethers.getAddress(walletAddress);
+        document.getElementById("walletAddress").value = checksumAddress;
+      } catch (err) {
+        showStatus("❌ Invalid wallet address", "error");
+        return;
+      }
+
+      try {
+        grantBtn.disabled = true;
+        grantBtn.innerHTML = '<span class="loading"></span>Processing...';
+        showStatus("⏳ Connecting to MetaMask...", "info");
+
+        if (!window.ethereum) {
+          throw new Error("MetaMask not detected");
+        }
+
+        provider = new ethers.BrowserProvider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        signer = await provider.getSigner();
+        ownerAddress = await signer.getAddress();
+
+        showStatus(`✅ Connected: ${ownerAddress.slice(0, 6)}...${ownerAddress.slice(-4)}`, "info");
+
+        // Check network
+        const network = await provider.getNetwork();
+        if (network.chainId !== 11155111) {
+          throw new Error("Please connect to Sepolia Testnet");
+        }
+
+        showStatus("⏳ Verifying owner and checking role...", "info");
+
+        const contract = new ethers.Contract(TOKEN_CONTRACT, TOKEN_ABI, signer);
+        
+        // Verify caller is owner
+        const contractOwner = await contract.owner();
+        if (contractOwner.toLowerCase() !== ownerAddress.toLowerCase()) {
+          throw new Error("You are not the contract owner. Only the owner can grant roles.");
+        }
+
+        // Check if already has role
+        const hasRole = await contract.hasRole(MINTER_ROLE, walletAddress);
+        if (hasRole) {
+          showStatus(`⚠️ Address already has MINTER_ROLE: ${walletAddress}`, "info");
+          grantBtn.disabled = false;
+          grantBtn.innerHTML = '🔓 Grant Minter Role';
+          return;
+        }
+
+        showStatus("⏳ Granting MINTER_ROLE. Please confirm in MetaMask...", "info");
+
+        const tx = await contract.grantRole(MINTER_ROLE, walletAddress);
+
+        showStatus("⏳ Waiting for transaction confirmation...", "info");
+        const receipt = await tx.wait();
+
+        if (receipt) {
+          showStatus(
+            `✅ Successfully granted MINTER_ROLE to ${walletAddress}!<br>TX: <a href="https://sepolia.etherscan.io/tx/${receipt.hash}" target="_blank" style="color: #00bcd4; text-decoration: underline;">${receipt.hash.slice(0, 10)}...</a>`,
+            "success"
+          );
+          document.getElementById("walletAddress").value = "";
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        showStatus(`❌ Error: ${error.message}`, "error");
+      } finally {
+        grantBtn.disabled = false;
+        grantBtn.innerHTML = '🔓 Grant Minter Role';
+      }
+    });
+
+    function showStatus(message, type) {
+      const statusEl = document.getElementById("status");
+      statusEl.className = `status ${type}`;
+      statusEl.innerHTML = message;
+    }
+
+    function showAuthStatus(message, type) {
+      const statusEl = document.getElementById("authStatus");
+      statusEl.className = `status ${type}`;
+      statusEl.innerHTML = message;
+    }
+
+    function logout() {
+      localStorage.removeItem("adminAuth");
+      isAdminAuthenticated = false;
+      document.getElementById("adminSection").classList.remove("active");
+      document.getElementById("authSection").classList.add("active");
+      document.getElementById("adminPassword").value = "";
+      document.getElementById("authStatus").innerHTML = "";
+      document.getElementById("walletAddress").value = "";
+      document.getElementById("status").innerHTML = "";
+    }
+  </script>
+</body>
+</html>

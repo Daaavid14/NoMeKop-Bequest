@@ -20,7 +20,13 @@
           <a href="index.html"><li> Home</li></a>
           <a href="marketplace.html"><li> Marketplace</li></a>
           <a href="#"><li> Game</li></a>
-          <li> Staking</li>
+          <li class="mint-dropdown">
+            <a href="#" class="mint-dropdown-trigger"> Mint <span class="dropdown-arrow">▼</span></a>
+            <ul class="mint-submenu">
+              <li><a href="mint.html">NFT Mint</a></li>
+              <li><a href="mint-pkc.html">PKC Mint</a></li>
+            </ul>
+          </li>
         </ul>
       </nav>
       <div class="support">
@@ -31,11 +37,16 @@
 
     <!-- Main Content -->
     <main class="main-content">
-        <header class="top-bars">
+        <header class="top-bar">
           <h2>Battle Arena</h2>
 
             <!-- Wrap both elements for hover consistency -->
             <div class="wallet-container">
+                <!-- Balance Display Badge -->
+                <div class="balance-badge">
+                  <span id="navBalance">0 ETH | 0 PKC</span>
+                </div>
+
                 <button id="connectWalletBtn" class="wallet-btn">CONNECT WALLET</button>
 
                 <div id="walletMenu" class="wallet-menu" aria-hidden="true">

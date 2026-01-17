@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mint PKC - Nomekop</title>
+  <link rel="stylesheet" href="css/dashboard.css">
+
+
+
+  <style>
+    .mint-pkc-container {
+      max-width: 600px;
+      margin: 0 auto;
+      background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+      border: 2px solid #667eea;
+      border-radius: 20px;
+      padding: 40px;
+      box-shadow: 0 0 30px rgba(102, 126, 234, 0.3);
+    }
+
+    .mint-title {
+      font-size: 32px;
+      font-weight: 700;
+      color: #00ff88;
+      text-align: center;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .mint-subtitle {
+      color: #aaa;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .balance-display {
+      background: rgba(0, 255, 136, 0.1);
+      border: 2px solid #00ff88;
+      border-radius: 12px;
+      padding: 20px;
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .balance-label {
+      color: #00bcd4;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 8px;
+    }
+
+    .balance-amount {
+      font-size: 28px;
+      font-weight: 700;
+      color: #00ff88;
+      font-family: 'Courier New', monospace;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-label {
+      display: block;
+      color: #00bcd4;
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 12px 16px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 2px solid #667eea;
+      border-radius: 10px;
+      color: #fff;
+      font-size: 14px;
+      transition: all 0.3s ease;
+      font-family: 'Courier New', monospace;
+    }
+
+    .form-input:focus {
+      outline: none;
+      border-color: #00ff88;
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.3);
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .form-input::placeholder {
+      color: #666;
+    }
+
+    .input-hint {
+      color: #888;
+      font-size: 12px;
+      margin-top: 6px;
+    }
+
+    .preset-amounts {
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .preset-btn {
+      padding: 8px 14px;
+      background: rgba(102, 126, 234, 0.2);
+      border: 1px solid #667eea;
+      border-radius: 8px;
+      color: #667eea;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      font-weight: 600;
+    }
+
+    .preset-btn:hover {
+      background: rgba(102, 126, 234, 0.4);
+      border-color: #00ff88;
+      color: #00ff88;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      margin-top: 30px;
+    }
+
+    button {
+      flex: 1;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-mint {
+      background: linear-gradient(135deg, #00ff88 0%, #00ffff 100%);
+      color: #000;
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+    }
+
+    .btn-mint:hover:not(:disabled) {
+      box-shadow: 0 0 40px rgba(0, 255, 136, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-mint:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-refresh {
+      background: #667eea;
+      color: #fff;
+      box-shadow: 0 0 15px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-refresh:hover {
+      background: #764ba2;
+      box-shadow: 0 0 25px rgba(102, 126, 234, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .status {
+      margin-top: 20px;
+      padding: 16px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 14px;
+      display: none;
+      animation: slideIn 0.3s ease;
+    }
+
+    @keyframes slideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-10px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .status.success {
+      background: rgba(34, 197, 94, 0.2);
+      border: 2px solid #22c55e;
+      color: #22c55e;
+      display: block;
+    }
+
+    .status.error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 2px solid #ef4444;
+      color: #ef4444;
+      display: block;
+    }
+
+    .status.info {
+      background: rgba(0, 188, 212, 0.2);
+      border: 2px solid #00bcd4;
+      color: #00bcd4;
+      display: block;
+    }
+
+    .info-box {
+      background: rgba(255, 193, 7, 0.1);
+      border: 2px solid #ffcb05;
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 25px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #ffd84d;
+    }
+
+    .info-box strong {
+      color: #ffcb05;
+    }
+
+    .tx-link {
+      color: #00bcd4;
+      text-decoration: none;
+      word-break: break-all;
+    }
+
+    .tx-link:hover {
+      color: #00ff88;
+      text-decoration: underline;
+    }
+
+    .loading {
+      display: inline-block;
+      width: 14px;
+      height: 14px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-top: 2px solid #00ff88;
+      border-radius: 50%;
+      animation: spin 0.8s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="dashboard-container">
+    <aside class="sidebar">
+      <div class="logo">
+        <img src="/backgrounds/nomekop.png" alt="Pokémon NFT Logo" />
+      </div>
+      <nav>
+        <ul>
+          <a href="index.html"><li>Home</li></a>
+          <a href="marketplace.html"><li>Marketplace</li></a>
+          <a href="play.html"><li>Game</li></a>
+          <li class="mint-dropdown mint-dropdown-active">
+            <a href="#" class="mint-dropdown-trigger"> Mint <span class="dropdown-arrow">▼</span></a>
+            <ul class="mint-submenu">
+              <li><a href="mint.html">NFT Mint</a></li>
+              <li><a href="#" class="active">PKC Mint</a></li>
+            </ul>
+          </li>
+        </ul>
+      </nav>
+      <div class="support">
+        <p>Support Center</p>
+        <p>Whitepaper</p>
+      </div>
+    </aside>
+
+    <main class="main-content">
+      <header class="top-bar">
+        <h2>Mint PokeCoin (PKC)</h2>
+        <div class="wallet-container">
+          <div class="balance-badge">
+            <span id="navBalance">0 ETH | 0 PKC</span>
+          </div>
+          <button id="connectWalletBtn" class="wallet-btn">CONNECT WALLET</button>
+          <div id="walletMenu" class="wallet-menu" aria-hidden="true">
+            <div class="wallet-menu-card">
+              <div class="wm-header">
+                <img src="" alt="Trainer Avatar" class="wm-avatar" id="wmAvatar" />
+                <div class="wm-info">
+                  <h4 id="wmTrainerName">Trainer</h4>
+                  <button class="wm-profile-btn">View Profile</button>
+                </div>
+              </div>
+              <div class="wm-address">
+                <span id="wmAddressShort">0x0000...0000</span>
+                <div class="wm-address-actions">
+                  <button id="wmCopyBtn" class="wm-icon-btn" title="Copy Address">📋</button>
+                  <a id="wmExplorer" target="_blank" rel="noopener" class="wm-icon-btn" title="View on Explorer">🔗</a>
+                </div>
+              </div>
+              <div class="wm-balance">
+                <p id="wmBalance">— ETH | — PKC</p>
+                <span id="wmNetwork" class="wm-network">—</span>
+              </div>
+              <div class="wm-stats">
+                <div class="wm-stat"><span>Pokémon</span><strong id="ownedNFTs">0</strong></div>
+                <div class="wm-stat"><span>PKC Balance</span><strong id="pkcBalance">0</strong></div>
+              </div>
+              <div class="wm-links">
+                <a href="#" class="wm-link">🎒 Inventory</a>
+                <a href="#" class="wm-link">⚙️ Settings</a>
+                <a href="#" class="wm-link">💬 Support</a>
+              </div>
+              <button id="wmLogoutBtn" class="wm-logout">➜] Log Out</button>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <div class="mint-pkc-container">
+        <h1 class="mint-title">🪙 Mint PKC</h1>
+        <p class="mint-subtitle">Mint PokeCoin tokens to your wallet</p>
+
+        <div class="balance-display">
+          <div class="balance-label">Your PKC Balance</div>
+          <div class="balance-amount" id="pkcDisplay">0.00 PKC</div>
+        </div>
+
+        <form id="mintForm" onsubmit="mintPKC(event)">
+          <div class="form-group">
+            <label class="form-label">Amount to Mint (PKC)</label>
+            <input 
+              type="number" 
+              id="mintAmount" 
+              placeholder="e.g., 100"
+              min="1"
+              step="1"
+              required
+              class="form-input"
+            />
+            <div class="input-hint">Minimum 1 PKC</div>
+            <div class="preset-amounts">
+              <button type="button" class="preset-btn" onclick="setAmount(100)">100 PKC</button>
+              <button type="button" class="preset-btn" onclick="setAmount(500)">500 PKC</button>
+              <button type="button" class="preset-btn" onclick="setAmount(1000)">1000 PKC</button>
+              <button type="button" class="preset-btn" onclick="setAmount(5000)">5000 PKC</button>
+            </div>
+          </div>
+
+          <div class="button-group">
+            <button type="submit" class="btn-mint" id="mintBtn">
+              💰 Mint PKC
+            </button>
+            <button type="button" class="btn-refresh" onclick="refreshBalance()">
+              🔄 Refresh
+            </button>
+          </div>
+        </form>
+
+        <div id="status" class="status"></div>
+
+        <div class="info-box">
+          <strong>ℹ️ Important:</strong><br>
+          • Make sure you're connected to <strong>Sepolia Testnet</strong><br>
+          • You must have the owner/minter role to mint tokens<br>
+          • PKC balance will update automatically across all pages
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
+  <script type="module" src="script/dashboard.js"></script>
+  <script>
+    // PokeCoin Contract Configuration
+    const TOKEN_CONTRACT = "0x6E23b691D086Ae9373995092b2783DACBbef225e";
+    const TOKEN_ABI = [
+      "function mint(address to, uint256 amount) public",
+      "function balanceOf(address account) public view returns (uint256)",
+      "function decimals() public view returns (uint8)",
+      "function symbol() public view returns (string)",
+      "function name() public view returns (string)",
+      "function hasRole(bytes32 role, address account) public view returns (bool)"
+    ];
+    
+    // MINTER_ROLE hash for PokeCoin contract
+    const MINTER_ROLE = "0x9f2df0fed2c77648de5860a4cc508cd0818c85b8b8a1ab4ceeef8d981c8956a6";
+
+    let provider;
+    let signer;
+    let userAddress;
+
+    // Initialize mint page after dashboard loads
+    async function initializeMintPage() {
+      // Wait longer for dashboard to set up wallet
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      
+      try {
+        // Try to get connected accounts from MetaMask
+        if (window.ethereum) {
+          const accounts = await window.ethereum.request({ method: 'eth_accounts' });
+          
+          if (accounts && accounts.length > 0) {
+            userAddress = accounts[0];
+            provider = new ethers.BrowserProvider(window.ethereum);
+            signer = await provider.getSigner();
+            
+            document.getElementById("mintBtn").disabled = false;
+            // Clear any previous status message
+            document.getElementById("status").innerHTML = "";
+            await refreshBalance();
+            return;
+          }
+        }
+        
+        // Fallback: check localStorage
+        const storedAddress = localStorage.getItem("connectedWallet");
+        if (storedAddress && window.ethereum) {
+          userAddress = storedAddress;
+          provider = new ethers.BrowserProvider(window.ethereum);
+          signer = await provider.getSigner();
+          
+          document.getElementById("mintBtn").disabled = false;
+          // Clear any previous status message
+          document.getElementById("status").innerHTML = "";
+          await refreshBalance();
+          return;
+        }
+        
+        // No wallet connected
+        showStatus("⚠️ Please connect MetaMask first", "info");
+      } catch (error) {
+        console.error("Initialization error:", error);
+        showStatus("⚠️ Please connect MetaMask first", "info");
+      }
+    }
+
+    async function connectWalletMint() {
+      if (!window.ethereum) {
+        showStatus("❌ MetaMask not detected", "error");
+        return;
+      }
+
+      try {
+        provider = new ethers.BrowserProvider(window.ethereum);
+        await provider.send("eth_requestAccounts", []);
+        signer = await provider.getSigner();
+        userAddress = await signer.getAddress();
+        
+        // Store in localStorage for dashboard to sync
+        localStorage.setItem("connectedWallet", userAddress);
+        
+        document.getElementById("mintBtn").disabled = false;
+        // Clear status after successful connection
+        document.getElementById("status").innerHTML = "";
+        await refreshBalance();
+      } catch (error) {
+        showStatus(`❌ Connection failed: ${error.message}`, "error");
+      }
+    }
+
+    async function refreshBalance() {
+      if (!userAddress || !provider) {
+        showStatus("⚠️ Please connect MetaMask first", "info");
+        return;
+      }
+
+      try {
+        const contract = new ethers.Contract(TOKEN_CONTRACT, TOKEN_ABI, provider);
+        const balance = await contract.balanceOf(userAddress);
+        const decimals = await contract.decimals();
+        const formattedBalance = ethers.formatUnits(balance, decimals);
+        
+        document.getElementById("pkcDisplay").textContent = `${parseFloat(formattedBalance).toFixed(2)} PKC`;
+      } catch (error) {
+        showStatus(`❌ Failed to fetch balance: ${error.message}`, "error");
+      }
+    }
+
+    async function mintPKC(event) {
+      event.preventDefault();
+
+      if (!userAddress || !signer) {
+        showStatus("⚠️ Please connect MetaMask first", "info");
+        return;
+      }
+
+      const amount = document.getElementById("mintAmount").value;
+      const mintBtn = document.getElementById("mintBtn");
+
+      if (!amount || amount < 1) {
+        showStatus("⚠️ Please enter a valid amount", "info");
+        return;
+      }
+
+      try {
+        mintBtn.disabled = true;
+        mintBtn.innerHTML = '<span class="loading"></span>Processing...';
+        showStatus("⏳ Checking permissions and minting PKC tokens...", "info");
+
+        const contract = new ethers.Contract(TOKEN_CONTRACT, TOKEN_ABI, signer);
+        const decimals = await contract.decimals();
+        const amountToMint = ethers.parseUnits(amount.toString(), decimals);
+
+        const tx = await contract.mint(userAddress, amountToMint);
+        
+        showStatus("⏳ Waiting for transaction confirmation...", "info");
+        const receipt = await tx.wait();
+
+        if (receipt) {
+          showStatus(
+            `✅ Successfully minted ${amount} PKC!<br>TX: <a href="https://sepolia.etherscan.io/tx/${receipt.hash}" target="_blank" class="tx-link">${receipt.hash.slice(0, 10)}...</a>`,
+            "success"
+          );
+          document.getElementById("mintAmount").value = "";
+          await refreshBalance();
+        }
+      } catch (error) {
+        const errorMsg = error.reason || error.message;
+        showStatus(`❌ Minting failed: ${errorMsg}`, "error");
+      } finally {
+        mintBtn.disabled = false;
+        mintBtn.innerHTML = '💰 Mint PKC';
+      }
+    }
+
+    function setAmount(value) {
+      document.getElementById("mintAmount").value = value;
+    }
+
+    function showStatus(message, type) {
+      const statusEl = document.getElementById("status");
+      statusEl.className = `status ${type}`;
+      statusEl.innerHTML = message;
+    }
+
+    // Auto-refresh balance every 10 seconds when connected
+    setInterval(async () => {
+      if (userAddress) {
+        await refreshBalance();
+      }
+    }, 10000);
+
+    // Initialize mint page on load
+    document.addEventListener("DOMContentLoaded", initializeMintPage);
+  </script>
+</body>
+</html>

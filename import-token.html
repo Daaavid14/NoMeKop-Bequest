@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Import PKC Token - Nomekop</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background: #0b0c10;
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: linear-gradient(135deg, #1c1f26 0%, #20242b 100%);
+      border-radius: 20px;
+      padding: 40px;
+      max-width: 500px;
+      width: 100%;
+      box-shadow: 0 0 50px rgba(102, 126, 234, 0.3);
+      border: 2px solid #667eea;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #00ff88;
+      text-align: center;
+    }
+
+    .subtitle {
+      color: #aaa;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 14px;
+    }
+
+    .token-info {
+      background: rgba(102, 126, 234, 0.1);
+      border: 1px solid #667eea;
+      border-radius: 12px;
+      padding: 20px;
+      margin-bottom: 25px;
+    }
+
+    .info-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 12px;
+      font-size: 14px;
+    }
+
+    .info-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .label {
+      color: #00bcd4;
+      font-weight: 600;
+    }
+
+    .value {
+      color: #fff;
+      font-family: 'Courier New', monospace;
+      word-break: break-all;
+      text-align: right;
+      max-width: 250px;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 12px;
+      flex-direction: column;
+    }
+
+    button {
+      padding: 14px 24px;
+      border: none;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00ff88 0%, #00ffff 100%);
+      color: #000;
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.4);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 0 40px rgba(0, 255, 136, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: #667eea;
+      color: #fff;
+      box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
+    }
+
+    .btn-secondary:hover {
+      background: #764ba2;
+      box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
+      transform: translateY(-2px);
+    }
+
+    .status {
+      margin-top: 20px;
+      padding: 14px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 14px;
+      display: none;
+    }
+
+    .status.success {
+      background: rgba(34, 197, 94, 0.2);
+      border: 1px solid #22c55e;
+      color: #22c55e;
+      display: block;
+    }
+
+    .status.error {
+      background: rgba(239, 68, 68, 0.2);
+      border: 1px solid #ef4444;
+      color: #ef4444;
+      display: block;
+    }
+
+    .status.info {
+      background: rgba(0, 188, 212, 0.2);
+      border: 1px solid #00bcd4;
+      color: #00bcd4;
+      display: block;
+    }
+
+    .divider {
+      height: 1px;
+      background: rgba(102, 126, 234, 0.2);
+      margin: 25px 0;
+    }
+
+    .instructions {
+      background: rgba(255, 203, 5, 0.1);
+      border: 1px solid #ffcb05;
+      border-radius: 10px;
+      padding: 15px;
+      font-size: 13px;
+      line-height: 1.6;
+      color: #ffd84d;
+    }
+
+    .instructions strong {
+      color: #ffcb05;
+    }
+
+    .copy-icon {
+      cursor: pointer;
+      color: #00bcd4;
+      margin-left: 8px;
+      font-size: 12px;
+    }
+
+    .copy-icon:hover {
+      color: #00ff88;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🎮 Import PKC Token</h1>
+    <p class="subtitle">Add PokeCoin to your MetaMask wallet</p>
+
+    <div class="token-info">
+      <div class="info-row">
+        <span class="label">Token Name:</span>
+        <span class="value">PokeCoin</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Symbol:</span>
+        <span class="value">PKC</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Network:</span>
+        <span class="value">Sepolia Testnet</span>
+      </div>
+      <div class="info-row">
+        <span class="label">Contract:</span>
+        <span class="value">0x6E23b691D086Ae9373995092b2783DACBbef225e <span class="copy-icon" onclick="copyToClipboard('0x6E23b691D086Ae9373995092b2783DACBbef225e')">📋</span></span>
+      </div>
+    </div>
+
+    <div class="button-group">
+      <button class="btn-primary" onclick="importToken()">
+        ✨ Import PKC to MetaMask
+      </button>
+      <button class="btn-secondary" onclick="copyToClipboard('0x6E23b691D086Ae9373995092b2783DACBbef225e')">
+        📋 Copy Contract Address
+      </button>
+    </div>
+
+    <div id="status" class="status"></div>
+
+    <div class="divider"></div>
+
+    <div class="instructions">
+      <strong>ℹ️ Manual Import (if auto-import fails):</strong><br>
+      1. Open MetaMask<br>
+      2. Click "Import tokens"<br>
+      3. Paste contract address above<br>
+      4. Click "Import"
+    </div>
+  </div>
+
+  <script>
+    async function importToken() {
+      const statusEl = document.getElementById('status');
+      
+      if (!window.ethereum) {
+        statusEl.className = 'status error';
+        statusEl.textContent = '❌ MetaMask not detected. Please install MetaMask first.';
+        return;
+      }
+
+      try {
+        statusEl.className = 'status info';
+        statusEl.textContent = '⏳ Requesting MetaMask...';
+
+        const wasAdded = await window.ethereum.request({
+          method: 'wallet_watchAsset',
+          params: {
+            type: 'ERC20',
+            options: {
+              address: '0x6E23b691D086Ae9373995092b2783DACBbef225e',
+              symbol: 'PKC',
+              decimals: 18,
+              image: 'https://raw.githubusercontent.com/uniswap/assets/master/blockchains/ethereum/assets/0x6E23b691D086Ae9373995092b2783DACBbef225e/logo.png'
+            }
+          }
+        });
+
+        if (wasAdded) {
+          statusEl.className = 'status success';
+          statusEl.textContent = '✅ PKC token imported successfully! Check your MetaMask wallet.';
+        } else {
+          statusEl.className = 'status info';
+          statusEl.textContent = 'ℹ️ Token import was cancelled.';
+        }
+      } catch (error) {
+        statusEl.className = 'status error';
+        statusEl.textContent = `❌ Error: ${error.message}`;
+        console.error(error);
+      }
+    }
+
+    function copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        const statusEl = document.getElementById('status');
+        statusEl.className = 'status success';
+        statusEl.textContent = '✅ Contract address copied to clipboard!';
+        setTimeout(() => {
+          statusEl.className = 'status';
+        }, 2000);
+      });
+    }
+  </script>
+</body>
+</html>
