@@ -97,7 +97,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // -------------------- CONTRACT CONFIG --------------------
   const NFT_CONTRACT = "0xDc74da1175419D36882806D588B8033B1c28E6d7";
   const TOKEN_CONTRACT = "0x6E23b691D086Ae9373995092b2783DACBbef225e";
-  const MARKET_CONTRACT = "0x7FA35D4C5b94112058Cc6dE8ABa002E337b20D08";
+  const MARKET_CONTRACT = "0x7F56c14911Ab4235f8f9b11F88d74a7A7D3E4727";
   const POKECOIN_CONTRACT = TOKEN_CONTRACT;
 
   const nftAbi = [
@@ -175,28 +175,191 @@ document.addEventListener("DOMContentLoaded", async () => {
   const wmNetwork = document.getElementById("wmNetwork");
   const wmLogoutBtn = document.getElementById("wmLogoutBtn");
 
-  // Dashboard stat elements
-  const totalPokemonEl = document.getElementById("totalPokemon");
-  const ownedNFTsEl = document.getElementById("ownedNFTs");
-  const battleWinsEl = document.getElementById("battleWins");
-  const volumeEl = document.getElementById("volume");
+  // Dashboard stat elements (stats card section)
+  const statTotalPokemonEl = document.getElementById("statTotalPokemon");
+  const statOwnedNFTsEl = document.getElementById("statOwnedNFTs");
+  const statBattleWinsEl = document.getElementById("statBattleWins");
+  const statVolumeEl = document.getElementById("statVolume");
+  
+  // Wallet menu stat elements
+  const wmOwnedNFTsEl = document.getElementById("ownedNFTs");
+  const wmBattleWinsEl = document.getElementById("battleWins");
+  const wmVolumeEl = document.getElementById("volume");
+
+  // Login modal elements
+  const loginModal = document.getElementById("loginModal");
+  const loginCloseBtn = document.getElementById("loginCloseBtn");
+  const loginPrimaryBtn = document.getElementById("loginPrimaryBtn");
+  const loginSecondaryBtn = document.getElementById("loginSecondaryBtn");
+  const loginBackdrop = loginModal ? loginModal.querySelector(".login-modal__backdrop") : null;
+
+  function openLoginModal() {
+    if (!loginModal) return;
+    loginModal.classList.add("is-open");
+    loginModal.setAttribute("aria-hidden", "false");
+  }
+
+  function closeLoginModal() {
+    if (!loginModal) return;
+    loginModal.classList.remove("is-open");
+    loginModal.setAttribute("aria-hidden", "true");
+  }
+
+  if (loginCloseBtn) loginCloseBtn.addEventListener("click", closeLoginModal);
+  if (loginBackdrop) loginBackdrop.addEventListener("click", closeLoginModal);
+  if (loginSecondaryBtn) loginSecondaryBtn.addEventListener("click", closeLoginModal);
+  if (loginPrimaryBtn) {
+    loginPrimaryBtn.addEventListener("click", async () => {
+      await connectWallet();
+      closeLoginModal();
+    });
+  }
 
   let provider, signer, userAddress;
+
+  // ======================================
+  // LOAD DASHBOARD STATS
+  // ======================================
+  async function loadDashboardStats() {
+    if (!userAddress) {
+      console.log("❌ No user address found");
+      return;
+    }
+
+    console.log("🔄 Loading dashboard stats for:", userAddress);
+
+    try {
+      // Initialize contracts
+      const nftContract = new ethers.Contract(NFT_CONTRACT, nftAbi, provider);
+      const marketAbi = [
+        "function getListing(uint256 tokenId) view returns (tuple(uint256 tokenId, address seller, uint256 price, bool active))",
+      ];
+      const marketContract = new ethers.Contract(MARKET_CONTRACT, marketAbi, provider);
+
+      console.log("✅ Contracts initialized");
+      console.log(`📍 NFT Contract: ${NFT_CONTRACT}`);
+      console.log(`📍 Market Contract: ${MARKET_CONTRACT}`);
+
+      // 1️⃣ Total Pokémon in Marketplace
+      try {
+        const totalCount = await nftContract.nextTokenId();
+        const totalNumber = Number(totalCount);
+        console.log(`📊 Total Pokémon in marketplace: ${totalNumber}`);
+        if (statTotalPokemonEl) statTotalPokemonEl.textContent = totalNumber;
+      } catch (err) {
+        console.error("❌ Failed to fetch total Pokémon:", err);
+        if (statTotalPokemonEl) statTotalPokemonEl.textContent = "0";
+      }
+
+      // 2️⃣ Owned NFTs (user's balance)
+      let ownedCount = 0;
+      try {
+        const balance = await nftContract.balanceOf(userAddress);
+        ownedCount = Number(balance);
+        console.log(`🎁 Owned NFTs balance: ${ownedCount}`);
+        if (statOwnedNFTsEl) statOwnedNFTsEl.textContent = ownedCount;
+        if (wmOwnedNFTsEl) wmOwnedNFTsEl.textContent = ownedCount;
+      } catch (err) {
+        console.error("❌ Failed to fetch owned NFTs:", err);
+        if (statOwnedNFTsEl) statOwnedNFTsEl.textContent = "0";
+        if (wmOwnedNFTsEl) wmOwnedNFTsEl.textContent = "0";
+      }
+
+      // 3️⃣ Calculate Total Value of Owned NFTs
+      try {
+        let totalValue = 0n; // BigInt for precision
+        let tokensFoundCount = 0;
+        
+        if (ownedCount > 0) {
+          // Get total tokens to iterate through
+          const totalTokens = await nftContract.nextTokenId();
+          const totalNumber = Number(totalTokens);
+          
+          console.log(`🔍 Searching through tokens 0-${totalNumber - 1}...`);
+          console.log(`📌 User address: ${userAddress}`);
+          
+          // Find all tokens owned by user and sum their listing prices
+          for (let tokenId = 0; tokenId < totalNumber; tokenId++) {
+            try {
+              const owner = await nftContract.ownerOf(tokenId);
+              const isOwnedByUser = owner.toLowerCase() === userAddress.toLowerCase();
+              
+              if (isOwnedByUser) {
+                tokensFoundCount++;
+                console.log(`✅ Token #${tokenId} OWNED by user (owner: ${owner})`);
+                
+                try {
+                  // Get listing info for this token
+                  const listing = await marketContract.getListing(tokenId);
+                  console.log(`  Listing status: active=${listing.active}, price=${ethers.formatEther(listing.price)} ETH, seller=${listing.seller}`);
+                  
+                  if (listing.active && listing.seller.toLowerCase() === userAddress.toLowerCase()) {
+                    totalValue += BigInt(listing.price);
+                    const listingPrice = ethers.formatEther(listing.price);
+                    console.log(`  💰 Adding ${listingPrice} ETH to total value`);
+                  } else if (!listing.active) {
+                    console.log(`  📦 Not active on marketplace`);
+                  } else {
+                    console.log(`  ⚠️ Listed by different address`);
+                  }
+                } catch (e) {
+                  console.warn(`  ⚠️ Error getting listing:`, e.message);
+                }
+              }
+            } catch (e) {
+              // Silently continue
+            }
+          }
+          
+          console.log(`📊 Found ${tokensFoundCount} tokens owned by user`);
+        } else {
+          console.log("ℹ️ User owns 0 NFTs, skipping value calculation");
+        }
+
+        const totalValueEth = ethers.formatEther(totalValue);
+        console.log(`💎 Total value of owned listed NFTs: ${totalValueEth} ETH`);
+        if (statVolumeEl) {
+          const displayValue = parseFloat(totalValueEth).toFixed(4);
+          statVolumeEl.innerHTML = `<svg width="20" height="20" viewBox="0 0 256 417" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><path fill="#8A92B2" d="M127.961 0l-2.795 9.5v275.668l2.795 2.79 127.962-75.638z"/><path fill="#62688F" d="M127.962 0L0 212.32l127.962 75.639V154.158z"/><path fill="#62688F" d="M127.961 312.187l-1.575 1.92v98.199l1.575 4.6L256 236.587z"/><path fill="#454A75" d="M127.962 416.905v-104.72L0 236.585z"/><path fill="#8A92B2" d="M127.961 287.958l127.96-75.637-127.96-58.162z"/><path fill="#62688F" d="M0 212.32l127.96 75.638v-133.8z"/></svg> ${displayValue}`;
+          console.log(`✍️ Updated UI statVolumeEl to: ETH ${displayValue}`);
+        }
+        if (wmVolumeEl) {
+          const displayValue = parseFloat(totalValueEth).toFixed(4);
+          wmVolumeEl.innerHTML = `<svg width="20" height="20" viewBox="0 0 256 417" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><path fill="#8A92B2" d="M127.961 0l-2.795 9.5v275.668l2.795 2.79 127.962-75.638z"/><path fill="#62688F" d="M127.962 0L0 212.32l127.962 75.639V154.158z"/><path fill="#62688F" d="M127.961 312.187l-1.575 1.92v98.199l1.575 4.6L256 236.587z"/><path fill="#454A75" d="M127.962 416.905v-104.72L0 236.585z"/><path fill="#8A92B2" d="M127.961 287.958l127.96-75.637-127.96-58.162z"/><path fill="#62688F" d="M0 212.32l127.96 75.638v-133.8z"/></svg> ${displayValue}`;
+          console.log(`✍️ Updated UI wmVolumeEl to: ETH ${displayValue}`);
+        }
+      } catch (err) {
+        console.error("❌ Failed to calculate owned NFTs value:", err);
+        if (statVolumeEl) statVolumeEl.innerHTML = `<svg width="20" height="20" viewBox="0 0 256 417" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><path fill="#8A92B2" d="M127.961 0l-2.795 9.5v275.668l2.795 2.79 127.962-75.638z"/><path fill="#62688F" d="M127.962 0L0 212.32l127.962 75.639V154.158z"/><path fill="#62688F" d="M127.961 312.187l-1.575 1.92v98.199l1.575 4.6L256 236.587z"/><path fill="#454A75" d="M127.962 416.905v-104.72L0 236.585z"/><path fill="#8A92B2" d="M127.961 287.958l127.96-75.637-127.96-58.162z"/><path fill="#62688F" d="M0 212.32l127.96 75.638v-133.8z"/></svg> 0`;
+        if (wmVolumeEl) wmVolumeEl.innerHTML = `<svg width="20" height="20" viewBox="0 0 256 417" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 4px;"><path fill="#8A92B2" d="M127.961 0l-2.795 9.5v275.668l2.795 2.79 127.962-75.638z"/><path fill="#62688F" d="M127.962 0L0 212.32l127.962 75.639V154.158z"/><path fill="#62688F" d="M127.961 312.187l-1.575 1.92v98.199l1.575 4.6L256 236.587z"/><path fill="#454A75" d="M127.962 416.905v-104.72L0 236.585z"/><path fill="#8A92B2" d="M127.961 287.958l127.96-75.637-127.96-58.162z"/><path fill="#62688F" d="M0 212.32l127.96 75.638v-133.8z"/></svg> 0`;
+      }
+
+      // 4️⃣ Battle Wins (placeholder - set to 0 for now)
+      if (statBattleWinsEl) statBattleWinsEl.textContent = "0";
+      if (wmBattleWinsEl) wmBattleWinsEl.textContent = "0";
+
+      console.log("✅ Dashboard stats loaded successfully!");
+
+    } catch (err) {
+      console.error("❌ loadDashboardStats error:", err);
+    }
+  }
 
   // ======================================
   // INITIALIZE BALANCES TO 0 (NOT LOGGED IN)
   // ======================================
   function initializeBalances() {
     const navBalance = document.getElementById("navBalance");
-    const balanceText = "0 ETH | 0 PKC";
+    const ethLogo = '<svg width="12" height="12" viewBox="0 0 256 417" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><path fill="#8A92B2" d="M127.961 0l-2.795 9.5v275.668l2.795 2.79 127.962-75.638z"/><path fill="#62688F" d="M127.962 0L0 212.32l127.962 75.639V154.158z"/><path fill="#62688F" d="M127.961 312.187l-1.575 1.92v98.199l1.575 4.6L256 236.587z"/><path fill="#454A75" d="M127.962 416.905v-104.72L0 236.585z"/><path fill="#8A92B2" d="M127.961 287.958l127.96-75.637-127.96-58.162z"/><path fill="#62688F" d="M0 212.32l127.96 75.638v-133.8z"/></svg>';
+    const balanceHtml = `${ethLogo} 0 ETH | 0 PKC`;
 
-    if (navBalance) navBalance.textContent = balanceText;
-    if (wmBalance) wmBalance.textContent = balanceText;
+    if (navBalance) navBalance.innerHTML = balanceHtml;
+    if (wmBalance) wmBalance.innerHTML = balanceHtml;
     if (wmNetwork) wmNetwork.textContent = "NOT CONNECTED";
     if (connectBtn) {
-      connectBtn.textContent = "CONNECT WALLET";
-      connectBtn.style.background = "#ffca3b";
-      connectBtn.style.color = "#fff";
+      connectBtn.textContent = "Login";
+      connectBtn.style.background = "linear-gradient(120deg, #2f8bff, #6dd9ff)";
+      connectBtn.style.color = "#041125";
     }
 
     // Clear cached display values when no wallet is connected
@@ -290,22 +453,23 @@ async function connectWallet() {
     // Update Wallet Dropdown UI
     if (connectBtn) {
       connectBtn.textContent = shortAddr;
-      connectBtn.style.background = "#22c55e";
-      connectBtn.style.color = "#fff";
+      connectBtn.style.background = "linear-gradient(120deg, #1ed6ff, #3f8bff)";
+      connectBtn.style.color = "#041125";
     }
 
     // Update balance, network, and explorer info
-    const balanceText = `${formattedEth} ETH | ${pokeBal} PKC`;
+    const ethLogo = '<svg width="20" height="20" viewBox="0 0 256 417" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><path fill="#8A92B2" d="M127.961 0l-2.795 9.5v275.668l2.795 2.79 127.962-75.638z"/><path fill="#62688F" d="M127.962 0L0 212.32l127.962 75.639V154.158z"/><path fill="#62688F" d="M127.961 312.187l-1.575 1.92v98.199l1.575 4.6L256 236.587z"/><path fill="#454A75" d="M127.962 416.905v-104.72L0 236.585z"/><path fill="#8A92B2" d="M127.961 287.958l127.96-75.637-127.96-58.162z"/><path fill="#62688F" d="M0 212.32l127.96 75.638v-133.8z"/></svg>';
+    const balanceHtml = `${ethLogo} ${formattedEth} ETH | ${pokeBal} PKC`;
     const navBalance = document.getElementById("navBalance");
-    if (navBalance) navBalance.textContent = balanceText;
-    if (wmBalance) wmBalance.textContent = balanceText;
+    if (navBalance) navBalance.innerHTML = balanceHtml;
+    if (wmBalance) wmBalance.innerHTML = balanceHtml;
     if (wmNetwork) wmNetwork.textContent = network.name.toUpperCase();
 
     // Update nav visibility now that wallet is known
     restrictMintNavigation();
     
     // Cache balance to localStorage so it persists across page navigation
-    localStorage.setItem("walletBalance", balanceText);
+    localStorage.setItem("walletBalance", `${formattedEth} ETH | ${pokeBal} PKC`);
     localStorage.setItem("walletAddress", userAddress);
 
     const explorerLink = `https://sepolia.etherscan.io/address/${userAddress}`;
@@ -346,6 +510,8 @@ async function connectWallet() {
       console.warn("⚠️ Failed to load trainer NFT avatar:", err);
     }
 
+    // 📊 Load Dashboard Stats
+    await loadDashboardStats();
 
     console.log(`✅ Wallet connected: ${userAddress}`);
     if (walletMenu) walletMenu.setAttribute("aria-hidden", "true");
@@ -389,13 +555,14 @@ function disconnectWallet() {
   
   // Reset UI to default "not logged in" state
   const navBalance = document.getElementById("navBalance");
-  if (navBalance) navBalance.textContent = "0 ETH | 0 PKC";
-  if (wmBalance) wmBalance.textContent = "0 ETH | 0 PKC";
+  const ethLogo = '<svg width="12" height="12" viewBox="0 0 256 417" xmlns="http://www.w3.org/2000/svg" style="vertical-align: middle; margin-right: 2px;"><path fill="#8A92B2" d="M127.961 0l-2.795 9.5v275.668l2.795 2.79 127.962-75.638z"/><path fill="#62688F" d="M127.962 0L0 212.32l127.962 75.639V154.158z"/><path fill="#62688F" d="M127.961 312.187l-1.575 1.92v98.199l1.575 4.6L256 236.587z"/><path fill="#454A75" d="M127.962 416.905v-104.72L0 236.585z"/><path fill="#8A92B2" d="M127.961 287.958l127.96-75.637-127.96-58.162z"/><path fill="#62688F" d="M0 212.32l127.96 75.638v-133.8z"/></svg>';
+  if (navBalance) navBalance.innerHTML = `${ethLogo} 0 ETH | 0 PKC`;
+  if (wmBalance) wmBalance.innerHTML = `${ethLogo} 0 ETH | 0 PKC`;
   if (wmNetwork) wmNetwork.textContent = "NOT CONNECTED";
   if (connectBtn) {
-    connectBtn.textContent = "CONNECT WALLET";
-    connectBtn.style.background = "#ffca3b";
-    connectBtn.style.color = "#fff";
+    connectBtn.textContent = "Login";
+    connectBtn.style.background = "linear-gradient(120deg, #2f8bff, #6dd9ff)";
+    connectBtn.style.color = "#041125";
   }
   
   const wmAddressShort = document.getElementById("wmAddressShort");
@@ -442,7 +609,9 @@ if (walletMenu) {
   // CLICK TO CONNECT
   // ======================================
   connectBtn.addEventListener("click", async () => {
-    if (!userAddress) await connectWallet();
+    if (!userAddress) {
+      openLoginModal();
+    }
   });
 
   if (wmLogoutBtn) wmLogoutBtn.addEventListener("click", disconnectWallet);

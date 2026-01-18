@@ -10,42 +10,40 @@
 </head>
 <body>
 <div class="dashboard-container">
-    <!-- Sidebar -->
     <aside class="sidebar">
-      <div class="logo">
-        <img src="/backgrounds/nomekop.png" alt="Pokémon NFT Logo" />
-      </div>
-      <nav>
-        <ul>
-          <a href="index.html"><li class=""> Home</li></a>
-          <a href="#"><li> Marketplace</li></a>
-          <a href="play.html"><li> Game</li></a>
-          <li class="mint-dropdown">
-            <a href="#" class="mint-dropdown-trigger"> Mint <span class="dropdown-arrow">▼</span></a>
-            <ul class="mint-submenu">
-              <li><a href="mint.html">NFT Mint</a></li>
-              <li><a href="mint-pkc.html">PKC Mint</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-      <div class="support">
-        <p>Support Center</p>
-        <p>Whitepaper</p>
-      </div>
-    </aside>
+        <div class="logo">
+          <img src="/backgrounds/nomekop.png" alt="Nomekop Logo" />
+        </div>
+        <nav>
+          <ul>
+            <a href="index.html"><li class="active"><span class="icon">🏠</span> Home</li></a>
+            <a href="#" class="active"><li><span class="icon">🛒</span> Marketplace</li></a>
+            <a href="play.html"><li><span class="icon">🎮</span> Game</li></a>
+            <li class="mint-dropdown">
+              <a href="#" class="mint-dropdown-trigger"><span class="icon">✨</span> Mint <span class="dropdown-arrow">▼</span></a>
+              <ul class="mint-submenu">
+                <li><a href="mint.html">NFT Mint</a></li>
+                <li><a href="mint-pkc.html">PKC Mint</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <div class="support">
+          <p>Support Center</p>
+          <p>Whitepaper</p>
+        </div>
+      </aside>
 
     <main class="main-content">
         <header class="top-bar">
           <h2>Marketplace</h2>
 
             <div class="wallet-container">
-                <!-- Balance Display Badge -->
                 <div class="balance-badge">
                   <span id="navBalance">0 ETH | 0 PKC</span>
                 </div>
 
-                <button id="connectWalletBtn" class="wallet-btn">CONNECT WALLET</button>
+                <button id="connectWalletBtn" class="wallet-btn">Login</button>
 
                 <div id="walletMenu" class="wallet-menu" aria-hidden="true">
                     <div class="wallet-menu-card">

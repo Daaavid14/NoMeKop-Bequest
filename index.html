@@ -3,124 +3,175 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Pokémon NFT Dashboard</title>
+  <title>Nomekop Dashboard</title>
   <link rel="stylesheet" href="css/dashboard.css">
   <link rel="shortcut icon" href="backgrounds/pokemon-ball.png" type="image/x-icon">
 </head>
 <body>
 
-  <div class="dashboard-container">
-    <aside class="sidebar">
-      <div class="logo">
-        <img src="/backgrounds/nomekop.png" alt="Pokémon NFT Logo" />
-      </div>
-      <nav>
-        <ul>
-          <a href="#"><li class=""> Home</li></a>
-          <a href="marketplace.html"><li> Marketplace</li></a>
-          <a href="play.html"><li> Game</li></a>
-          <li class="mint-dropdown">
-            <a href="#" class="mint-dropdown-trigger"> Mint <span class="dropdown-arrow">▼</span></a>
-            <ul class="mint-submenu">
-              <li><a href="mint.html">NFT Mint</a></li>
-              <li><a href="mint-pkc.html">PKC Mint</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-      <div class="support">
-        <p>Support Center</p>
-        <p>Whitepaper</p>
-      </div>
-    </aside>
+  <div class="dashboard-shell">
+    <!-- <div class="announcement-bar">
+      <span class="announcement-pill">New</span>
+      <span class="announcement-text">Climb the board and earn PKC boosts.</span>
+      <button class="announcement-cta">X</button>
+    </div> -->
 
-    <!-- Main Content -->
-    <main class="main-content">
+    <div class="dashboard-container">
+      <aside class="sidebar">
+        <div class="logo">
+          <img src="/backgrounds/nomekop.png" alt="Nomekop Logo" />
+        </div>
+        <nav>
+          <ul>
+            <a href="#"><li class="active"><span class="icon">🏠</span> Home</li></a>
+            <a href="marketplace.html"><li><span class="icon">🛒</span> Marketplace</li></a>
+            <a href="play.html"><li><span class="icon">🎮</span> Game</li></a>
+            <li class="mint-dropdown">
+              <a href="#" class="mint-dropdown-trigger"><span class="icon">✨</span> Mint <span class="dropdown-arrow">▼</span></a>
+              <ul class="mint-submenu">
+                <li><a href="mint.html">NFT Mint</a></li>
+                <li><a href="mint-pkc.html">PKC Mint</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <div class="support">
+          <p>Support Center</p>
+          <p>Whitepaper</p>
+        </div>
+      </aside>
+
+      <main class="main-content">
         <header class="top-bar">
-            <h2>Welcome, Trainer!</h2>
+          <div>
+            <h2>Welcome back, Trainer!</h2>
+          </div>
 
-            <!-- Wrap both elements for hover consistency -->
-            <div class="wallet-container">
-                <!-- Balance Display Badge -->
-                <div class="balance-badge">
-                  <span id="navBalance">0 ETH | 0 PKC</span>
-                </div>
-
-                <button id="connectWalletBtn" class="wallet-btn">CONNECT WALLET</button>
-
-                <div id="walletMenu" class="wallet-menu" aria-hidden="true">
-                    <div class="wallet-menu-card">
-                        <div class="wm-header">
-                            <img src="" alt="Trainer Avatar" class="wm-avatar" id="wmAvatar" />
-                            <div class="wm-info">
-                            <h4 id="wmTrainerName">Trainer</h4>
-                            <button class="wm-profile-btn">View Profile</button>
-                        </div>
-                    </div>
-
-                    <div class="wm-address">
-                        <span id="wmAddressShort">0x0000...0000</span>
-                        <div class="wm-address-actions">
-                            <button id="wmCopyBtn" class="wm-icon-btn" title="Copy Address">📋</button>
-                            <a id="wmExplorer" target="_blank" rel="noopener" class="wm-icon-btn" title="View on Explorer">🔗</a>
-                        </div>
-                    </div>
-
-                    <div class="wm-balance">
-                        <p id="wmBalance">— ETH | — PKC</p>
-                        <span id="wmNetwork" class="wm-network">—</span>
-                    </div>
-
-                    <div class="wm-stats">
-                        <div class="wm-stat"><span>Pokémon</span><strong id="ownedNFTs">0</strong></div>
-                        <div class="wm-stat"><span>Wins</span><strong id="battleWins">0</strong></div>
-                        <div class="wm-stat"><span>Volume</span><strong id="volume">Ξ 0</strong></div>
-                    </div>
-
-                    <div class="wm-links">
-                        <a href="#" class="wm-link">🎒 Inventory</a>
-                        <a href="#" class="wm-link">⚙️ Settings</a>
-                        <a href="#" class="wm-link">💬 Support</a>
-                    </div>
-
-                    <button id="wmLogoutBtn" class="wm-logout">➜] Log Out</button>
-                    </div>
-                </div>
+          <div class="wallet-container">
+            <div class="balance-badge">
+              <span id="navBalance">0.0795 ETH | 1001000.00 PKC</span>
             </div>
+
+            <button id="connectWalletBtn" class="wallet-btn">Login</button>
+
+            <div id="walletMenu" class="wallet-menu" aria-hidden="true">
+              <div class="wallet-menu-card">
+                <div class="wm-header">
+                  <img src="" alt="Trainer Avatar" class="wm-avatar" id="wmAvatar" />
+                  <div class="wm-info">
+                    <h4 id="wmTrainerName">Trainer</h4>
+                    <button class="wm-profile-btn">View Profile</button>
+                  </div>
+                </div>
+
+                <div class="wm-address">
+                  <span id="wmAddressShort">0x0000...0000</span>
+                  <div class="wm-address-actions">
+                    <button id="wmCopyBtn" class="wm-icon-btn" title="Copy Address">📋</button>
+                    <a id="wmExplorer" target="_blank" rel="noopener" class="wm-icon-btn" title="View on Explorer">🔗</a>
+                  </div>
+                </div>
+
+                <div class="wm-balance">
+                  <p id="wmBalance">— ETH | — PKC</p>
+                  <span id="wmNetwork" class="wm-network">—</span>
+                </div>
+
+                <div class="wm-stats">
+                  <div class="wm-stat"><span>Pokémon</span><strong id="ownedNFTs">0</strong></div>
+                  <div class="wm-stat"><span>Wins</span><strong id="battleWins">0</strong></div>
+                  <div class="wm-stat"><span>Volume</span><strong id="volume">Ξ 0</strong></div>
+                </div>
+
+                <div class="wm-links">
+                  <a href="#" class="wm-link">🎒 Inventory</a>
+                  <a href="#" class="wm-link">⚙️ Settings</a>
+                  <a href="#" class="wm-link">💬 Support</a>
+                </div>
+
+                <button id="wmLogoutBtn" class="wm-logout">Sign out</button>
+              </div>
+            </div>
+          </div>
         </header>
 
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="pill">Season 0: Playtest Path</p>
+            <h1>The first Nomekop Legacy playtest is live!</h1>
+            <p class="lede">Build team, play battle, and earn PKC in the first Nomekop bequest season. Earn early rewards and unlock rare traits.</p>
+            <div class="hero-actions">
+              <button class="btn-primary">Learn more</button>
+              <button class="btn-ghost">View rewards</button>
+            </div>
+          </div>
+          <div class="hero-art">
+            <img src="assets/sprites.png" alt="Nomekop party" />
+          </div>
+        </section>
 
-      <section class="banner">
-        <div class="banner-text">
-          <h1>Introducing Rare Nomekop Bequest</h1>
-          <p>Battle exclusive Mega Pokémon with dynamic NFT attributes.</p>
-          <button class="btn-primary">Explore Now</button>
-        </div>
-        <img src="assets/sprites.png" class="banner-img" alt="Pokemon Banner" />
-      </section>
+        <section class="stats">
+          <h3>Trainer Stats</h3>
+          <div class="stats-grid">
+            <div class="stat-card">
+              <div class="stat-icon">🐾</div>
+              <div>
+                <p class="stat-label">Total Pokémon</p>
+                <p id="statTotalPokemon" class="stat-value">40</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">🎴</div>
+              <div>
+                <p class="stat-label">Owned NFTs</p>
+                <p id="statOwnedNFTs" class="stat-value">40</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">⚔️</div>
+              <div>
+                <p class="stat-label">Battle Wins</p>
+                <p id="statBattleWins" class="stat-value">0</p>
+              </div>
+            </div>
+            <div class="stat-card">
+              <div class="stat-icon">⛃</div>
+              <div>
+                <p class="stat-label">Trading Volume</p>
+                <p id="statVolume" class="stat-value">0.0000</p>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+  </div>
 
-      <section class="stats">
-        <h3>Trainer Stats</h3>
-        <div class="stats-grid">
-          <div class="stat-card">
-            <h4>Total Pokémon</h4>
-            <p id="totalPokemon">0</p>
-          </div>
-          <div class="stat-card">
-            <h4>Owned NFTs</h4>
-            <p id="ownedNFTs">0</p>
-          </div>
-          <div class="stat-card">
-            <h4>Battle Wins</h4>
-            <p id="battleWins">0</p>
-          </div>
-          <div class="stat-card">
-            <h4>Trading Volume</h4>
-            <p id="volume">Ξ 0</p>
+  <!-- Login Modal -->
+  <div id="loginModal" class="login-modal" aria-hidden="true">
+    <div class="login-modal__backdrop"></div>
+    <div class="login-modal__dialog" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+      <button class="login-modal__close" id="loginCloseBtn" aria-label="Close login">×</button>
+      <div class="login-modal__content">
+        <div class="login-modal__left">
+          <img src="backgrounds/nomekop.png" alt="Nomekop" class="login-modal__logo" />
+          <h3 id="loginTitle">Welcome back, Trainer!</h3>
+          <p class="login-modal__subtitle">Select your login method</p>
+          <button id="loginPrimaryBtn" class="login-modal__btn login-modal__btn-primary">Continue with Extension Wallet</button>
+          <button id="loginSecondaryBtn" class="login-modal__btn login-modal__btn-secondary">Login with Mobile Wallet</button>
+          <p class="login-modal__legal">By continuing, you accept our Terms and Privacy Policy.</p>
+        </div>
+        <div class="login-modal__right">
+          <div class="login-modal__card">
+            <p class="login-modal__qr-title">Log in by QR Code</p>
+            <div class="login-modal__qr-box">
+              <span class="login-modal__qr-placeholder">QR</span>
+            </div>
+            <p class="login-modal__qr-sub">Scan with your mobile wallet to log in instantly</p>
           </div>
         </div>
-      </section>
-    </main>
+      </div>
+    </div>
   </div>
 
   <script src="https://cdn.jsdelivr.net/npm/ethers@6.8.1/dist/ethers.umd.min.js"></script>
