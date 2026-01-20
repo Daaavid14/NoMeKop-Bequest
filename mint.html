@@ -4,210 +4,36 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Mint Pokémon NFT</title>
-  <link rel="stylesheet" href="css/dashboard.css">
+  <link rel="stylesheet" href="css/mint.css">
   <link rel="shortcut icon" href="backgrounds/pokemon-ball.png" type="image/x-icon">
-
-
-
-  <style>
-    .mint-container {
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 40px 20px;
-    }
-
-    .mint-card {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      border-radius: 12px;
-      padding: 30px;
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
-      color: white;
-    }
-
-    .mint-card h3 {
-      font-size: 24px;
-      margin-bottom: 20px;
-      text-align: center;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    .form-group label {
-      display: block;
-      margin-bottom: 8px;
-      font-weight: 600;
-      font-size: 14px;
-    }
-
-    .form-group input,
-    .form-group select,
-    .form-group textarea {
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 8px;
-      font-size: 14px;
-      box-sizing: border-box;
-      background: rgba(255, 255, 255, 0.95);
-      color: #333;
-    }
-
-    .form-group textarea {
-      resize: vertical;
-      min-height: 100px;
-      font-family: monospace;
-    }
-
-    .form-group input:focus,
-    .form-group select:focus,
-    .form-group textarea:focus {
-      outline: none;
-      box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.3);
-    }
-
-    .mint-button {
-      width: 100%;
-      padding: 14px;
-      background: linear-gradient(135deg, #22c55e 0%, #16a34a 100%);
-      color: white;
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-
-    .mint-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 20px rgba(34, 197, 94, 0.3);
-    }
-
-    .mint-button:disabled {
-      background: #9ca3af;
-      cursor: not-allowed;
-      transform: none;
-    }
-
-    .status-message {
-      margin-top: 15px;
-      padding: 12px;
-      border-radius: 8px;
-      text-align: center;
-      font-weight: 600;
-      display: none;
-    }
-
-    .status-message.success {
-      background: rgba(34, 197, 94, 0.2);
-      color: #86efac;
-      border: 1px solid rgba(34, 197, 94, 0.5);
-      display: block;
-    }
-
-    .status-message.error {
-      background: rgba(239, 68, 68, 0.2);
-      color: #fca5a5;
-      border: 1px solid rgba(239, 68, 68, 0.5);
-      display: block;
-    }
-
-    .status-message.loading {
-      background: rgba(59, 130, 246, 0.2);
-      color: #93c5fd;
-      border: 1px solid rgba(59, 130, 246, 0.5);
-      display: block;
-    }
-
-    .rarity-preview {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 10px;
-      margin-top: 10px;
-    }
-
-    .rarity-badge {
-      padding: 8px;
-      border-radius: 6px;
-      text-align: center;
-      cursor: pointer;
-      border: 2px solid transparent;
-      font-weight: 600;
-      transition: all 0.2s ease;
-    }
-
-    .rarity-badge:hover {
-      transform: scale(1.05);
-    }
-
-    .rarity-badge.selected {
-      border-color: white;
-      box-shadow: 0 0 15px rgba(255, 255, 255, 0.3);
-    }
-
-    .rarity-common {
-      background: #8b8b8b;
-      color: white;
-    }
-
-    .rarity-uncommon {
-      background: #4ade80;
-      color: white;
-    }
-
-    .rarity-rare {
-      background: #3b82f6;
-      color: white;
-    }
-
-    .rarity-epic {
-      background: #a855f7;
-      color: white;
-    }
-
-    .rarity-legendary {
-      background: #f59e0b;
-      color: white;
-    }
-
-    .info-text {
-      background: rgba(255, 255, 255, 0.1);
-      padding: 12px;
-      border-radius: 6px;
-      font-size: 13px;
-      line-height: 1.6;
-      margin-bottom: 20px;
-    }
-  </style>
+  
 </head>
 <body>
 
   <div class="dashboard-container">
     <aside class="sidebar">
-      <div class="logo">
-        <img src="/backgrounds/nomekop.png" alt="Pokémon NFT Logo" />
-      </div>
-      <nav>
-        <ul>
-          <a href="index.html"><li>Home</li></a>
-          <a href="marketplace.html"><li>Marketplace</li></a>
-          <a href="play.html"><li>Game</li></a>
-          <li class="mint-dropdown mint-dropdown-active">
-            <a href="#" class="mint-dropdown-trigger"> Mint <span class="dropdown-arrow">▼</span></a>
-            <ul class="mint-submenu">
-              <li><a href="#" class="active">NFT Mint</a></li>
-              <li><a href="mint-pkc.html">PKC Mint</a></li>
-            </ul>
-          </li>
-        </ul>
-      </nav>
-      <div class="support">
-        <p>Support Center</p>
-        <p>Whitepaper</p>
-      </div>
-    </aside>
+        <div class="logo">
+          <img src="/backgrounds/nomekop.png" alt="Nomekop Logo" />
+        </div>
+        <nav>
+          <ul>
+            <a href="index.html"><li class="active"><span class="icon">🏠</span> Home</li></a>
+            <a href="marketplace.html"><li><span class="icon">🛒</span> Marketplace</li></a>
+            <a href="play.html"><li><span class="icon">🎮</span> Game</li></a>
+            <li class="mint-dropdown">
+              <a href="#" class="mint-dropdown-trigger"><span class="icon">✨</span> Mint <span class="dropdown-arrow">▼</span></a>
+              <ul class="mint-submenu">
+                <li><a href="mint.html">NFT Mint</a></li>
+                <li><a href="mint-pkc.html">PKC Mint</a></li>
+              </ul>
+            </li>
+          </ul>
+        </nav>
+        <div class="support">
+          <p>Support Center</p>
+          <p>Whitepaper</p>
+        </div>
+      </aside>
 
     <main class="main-content">
       <header class="top-bar">
@@ -247,7 +73,7 @@
           
           <div class="info-text">
             ℹ️ Enter the IPFS metadata link and rarity to mint your Pokémon NFT. Only contract owners can mint.
-            <br><strong>IPFS Hash:</strong> <code style="font-size: 12px; background: rgba(0,0,0,0.3); padding: 4px 6px; border-radius: 3px;">bafybeialp2okoiyl24adqzygeadfybv2cgysmcezdpsnnswlwd6jm3pcla</code>
+            <br><strong>IPFS Hash:</strong> <code class="inline-code">bafybeialp2okoiyl24adqzygeadfybv2cgysmcezdpsnnswlwd6jm3pcla</code>
           </div>
 
           <form id="mintForm">
@@ -290,8 +116,8 @@
             <div class="status-message" id="statusMessage"></div>
           </form>
 
-          <hr style="border: 1px solid rgba(255,255,255,0.2); margin: 30px 0;">
-          <h3 style="margin-top: 30px; margin-bottom: 20px;">⚡ Batch Mint</h3>
+          <hr class="hr-divider">
+          <h3 class="batch-title">⚡ Batch Mint</h3>
           
           <div class="info-text">
             Mint multiple Pokémon at once! Use the console for fastest batch operations.
@@ -307,15 +133,15 @@
             <input type="number" id="batchEndId" min="1" value="40" />
           </div>
 
-          <button type="button" id="batchMintBtn" class="mint-button" style="background: linear-gradient(135deg, #8b5cf6 0%, #d946ef 100%);">
+          <button type="button" id="batchMintBtn" class="mint-button batch-mint-button">
             ⚡ BATCH MINT (0-40)
           </button>
 
           <div class="status-message" id="batchStatusMessage"></div>
 
-          <div style="margin-top: 20px; padding: 12px; background: rgba(0,0,0,0.3); border-radius: 6px; font-size: 12px;">
+          <div class="tip-box">
             <strong>💡 Tip:</strong> For fastest batch minting, open the browser console (F12) and run:
-            <code style="display: block; margin-top: 8px; padding: 8px; background: rgba(0,0,0,0.5); border-radius: 3px;">await mintTools.quickMintAll()</code>
+            <code class="inline-code-block">await mintTools.quickMintAll()</code>
           </div>
         </div>
       </section>
