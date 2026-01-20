@@ -167,7 +167,6 @@ a {
   transform: translateY(-2px);
 }
 
-
 .wallet-menu {
   position: absolute;
   top: 110%;
@@ -195,7 +194,6 @@ a {
 .wallet-menu-card {
   padding: 16px;
 }
-
 
 .wm-header {
   display: flex;
@@ -321,9 +319,7 @@ a {
   background: #e53e3e;
 }
 
-
 /* Sidebar */
-
 .sidebar {
   background: linear-gradient(180deg, #0c1220 0%, #0a0f1c 60%, #090d16 100%);
   width: 13vw;

@@ -2,14 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mint Pokémon NFT</title>
   <link rel="stylesheet" href="css/mint.css">
   <link rel="shortcut icon" href="backgrounds/pokemon-ball.png" type="image/x-icon">
-  
 </head>
 <body>
-
   <div class="dashboard-container">
     <aside class="sidebar">
         <div class="logo">
@@ -37,35 +35,57 @@
 
     <main class="main-content">
       <header class="top-bar">
-        <h2>Mint Pokémon NFT</h2>
-        <div class="wallet-container">
-          <!-- Balance Display Badge -->
-          <div class="balance-badge">
-            <span id="navBalance">0 ETH | 0 PKC</span>
+          <div>
+            <h2>Welcome back, Trainer!</h2>
           </div>
 
-          <button id="connectWalletBtn" class="wallet-btn">CONNECT WALLET</button>
-          <div id="walletMenu" class="wallet-menu" aria-hidden="true">
-            <div class="wallet-menu-card">
-              <div class="wm-header">
-                <img src="" alt="Trainer Avatar" class="wm-avatar" id="wmAvatar" />
-                <div class="wm-info">
-                  <h4 id="wmTrainerName">Trainer</h4>
-                  <button class="wm-profile-btn">View Profile</button>
+          <div class="wallet-container">
+            <div class="balance-badge">
+              <span id="navBalance">0 ETH | 0 PKC</span>
+            </div>
+
+            <button id="connectWalletBtn" class="wallet-btn">Login</button>
+
+            <div id="walletMenu" class="wallet-menu" aria-hidden="true">
+              <div class="wallet-menu-card">
+                <div class="wm-header">
+                  <img src="" alt="Trainer Avatar" class="wm-avatar" id="wmAvatar" />
+                  <div class="wm-info">
+                    <h4 id="wmTrainerName">Trainer</h4>
+                    <button class="wm-profile-btn">View Profile</button>
+                  </div>
                 </div>
+
+                <div class="wm-address">
+                  <span id="wmAddressShort">0x0000...0000</span>
+                  <div class="wm-address-actions">
+                    <button id="wmCopyBtn" class="wm-icon-btn" title="Copy Address">📋</button>
+                    <a id="wmExplorer" target="_blank" rel="noopener" class="wm-icon-btn" title="View on Explorer">🔗</a>
+                  </div>
+                </div>
+
+                <div class="wm-balance">
+                  <p id="wmBalance">— ETH | — PKC</p>
+                  <span id="wmNetwork" class="wm-network">—</span>
+                </div>
+
+                <div class="wm-stats">
+                  <div class="wm-stat"><span>Pokémon</span><strong id="ownedNFTs">0</strong></div>
+                  <div class="wm-stat"><span>Wins</span><strong id="battleWins">0</strong></div>
+                  <div class="wm-stat"><span>Volume</span><strong id="volume">Ξ 0</strong></div>
+                </div>
+
+                <div class="wm-links">
+                  <a href="#" class="wm-link">🎒 Inventory</a>
+                  <a href="#" class="wm-link">⚙️ Settings</a>
+                  <a href="#" class="wm-link">💬 Support</a>
+                </div>
+
+                <button id="wmLogoutBtn" class="wm-logout">Sign out</button>
               </div>
-              <div class="wm-address">
-                <span id="wmAddressShort">0x0000...0000</span>
-              </div>
-              <div class="wm-balance">
-                <p id="wmBalance">— ETH</p>
-                <span id="wmNetwork" class="wm-network">—</span>
-              </div>
-              <button id="wmLogoutBtn" class="wm-logout">➜] Log Out</button>
             </div>
           </div>
-        </div>
-      </header>
+        </header>
 
       <section class="mint-container">
         <div class="mint-card">
