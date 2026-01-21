@@ -270,10 +270,11 @@ a {
 /* Sidebar */
 .sidebar {
   background: linear-gradient(180deg, #0c1220 0%, #0a0f1c 60%, #090d16 100%);
-  width: 23vw;
+  width: 400px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 24px;
   padding: 24px 22px;
   box-shadow: 8px 0 25px rgba(0, 0, 0, 0.55);
   border-right: 1px solid rgba(255, 255, 255, 0.05);
@@ -433,6 +434,7 @@ nav li.active {
   padding-top: 20px;
   font-size: 0.9em;
   color: #aaa;
+  margin-top: auto;
 }
 
 /* Main content */

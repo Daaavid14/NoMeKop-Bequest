@@ -4,32 +4,6 @@
     box-sizing: border-box;
 }
 
-/* ========================================
-   CUSTOM SCROLLBAR STYLING
-   ======================================== */
-::-webkit-scrollbar {
-  width: 12px;
-}
-
-::-webkit-scrollbar-track {
-  background: #0b0c10;
-  border-radius: 10px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: linear-gradient(180deg, #667eea 0%, #764ba2 100%);
-  border-radius: 10px;
-  box-shadow: 0 0 10px rgba(102, 126, 234, 0.5);
-}
-
-::-webkit-scrollbar-thumb:hover {
-  background: linear-gradient(180deg, #764ba2 0%, #667eea 100%);
-  box-shadow: 0 0 20px rgba(102, 126, 234, 0.8);
-}
-
-/* Firefox scrollbar */
-scrollbar-color: #667eea #0b0c10;
-scrollbar-width: thin;
 
 .battle-arena {
   position: absolute;
