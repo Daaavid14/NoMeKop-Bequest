@@ -68,7 +68,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       // Update UI
       if (connectBtn) {
         connectBtn.textContent = shortAddr;
-        connectBtn.style.background = "#22c55e";
         connectBtn.style.color = "#fff";
       }
 

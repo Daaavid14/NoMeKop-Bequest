@@ -269,7 +269,7 @@ a {
 /* Sidebar */
 .sidebar {
   background: linear-gradient(180deg, #0c1220 0%, #0a0f1c 60%, #090d16 100%);
-  width: 200px;
+  width: 179px;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
@@ -471,17 +471,17 @@ nav li.active {
     width: 100%;
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: space-evenly;
 }
 
 .hero-left img {    
     padding-top: 50px;
-    width: 350px;
+    width: 320px;
     z-index: -1;
 }
 .hero-right img {
     padding-top: 50px;
-    width: 370px;
+    width: 330px;
     z-index: -1;
 }
 
